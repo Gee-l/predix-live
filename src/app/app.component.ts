@@ -6,6 +6,14 @@ import { VisualiserComponent } from './visualiser/visualiser.component'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
-  title = 'app';
+  lat = 51.678418
+  lng = 7.809007
+
+  onChoseLocation(e){
+    this.lat = e.coords.lat;
+    this.lng = e.coords.lng;
+    console.log(e);
+  }
 }

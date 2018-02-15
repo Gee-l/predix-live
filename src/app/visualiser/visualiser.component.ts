@@ -19,8 +19,15 @@ export class VisualiserComponent implements OnInit {
           this.sensors = [JSON.stringify(data)]
           console.log(this.sensors);
         },
-        error => alert(error),
+        error => console.error(error),
         () => console.log('Fninished')
       );
+
+    this.nodeEndPointService.getCurrentTimeStamp('A81758FFFE0301F0', 4)
+      .subscribe(
+        data => {
+          console.log(data);
+        }
+      )
   }
 }
