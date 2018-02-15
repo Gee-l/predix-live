@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NodesEndpointService } from '../nodes-endpoint.service'
 
-
 @Component({
   selector: 'visualiser',
   templateUrl: './visualiser.component.html',
@@ -13,21 +12,16 @@ export class VisualiserComponent implements OnInit {
   sensors;
   constructor(private nodeEndPointService: NodesEndpointService) { }
   ngOnInit() {
-    this.nodeEndPointService.getAllNodes()
-      .subscribe(
-        data => {
-          this.sensors = [JSON.stringify(data)]
-          console.log(this.sensors);
-        },
-        error => console.error(error),
-        () => console.log('Fninished')
-      );
 
     this.nodeEndPointService.getCurrentTimeStamp('A81758FFFE0301F0', 4)
       .subscribe(
         data => {
-          console.log(data);
-        }
+          console.log('result', data);
+        },
+        error => {
+          console.log('Failed with', error)
+        },
+        () => console.log('successfull')
       )
   }
 }
