@@ -11,9 +11,9 @@ import { NodesEndpointService } from '../nodes-endpoint.service'
 export class VisualiserComponent implements OnInit {
   sensors;
   constructor(private nodeEndPointService: NodesEndpointService) { }
-  ngOnInit() {
 
-    this.nodeEndPointService.getCurrentTimestamp('A81758FFFE0301F0', 4)
+  ngOnInit() {
+    this.nodeEndPointService.getNode('A81758FFFE0301F0', 4)
       .subscribe(
         data => {
           console.log('result', data);
