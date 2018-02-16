@@ -4,17 +4,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class NodesEndpointService {
   private url = "https://jsonplaceholder.typicode.com/posts";
-  http = null;
   
-  constructor(http: HttpClient) { 
-    this.http = http;
-  }
+  constructor(private http: HttpClient) { }
 
   getAllNodes() {
     return this.http.get(this.url);
   }
 
-  getCurrentTimeStamp(node, limit) {
+  getCurrentTimestamp(node, limit) {
     return this.http.get(`http://smart-iot.bcx.co.za/iiot.cloud/services/sensors/node/${node}/1518688544/${limit}`);
   }
 

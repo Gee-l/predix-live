@@ -13,7 +13,7 @@ export class VisualiserComponent implements OnInit {
   constructor(private nodeEndPointService: NodesEndpointService) { }
   ngOnInit() {
 
-    this.nodeEndPointService.getCurrentTimeStamp('A81758FFFE0301F0', 4)
+    this.nodeEndPointService.getCurrentTimestamp('A81758FFFE0301F0', 4)
       .subscribe(
         data => {
           console.log('result', data);
