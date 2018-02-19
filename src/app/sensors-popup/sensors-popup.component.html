@@ -1,12 +1,12 @@
-<h3 matDialogTitle>Node: </h3>
+<h3 matDialogTitle>Node: {{data.name}} </h3>
 <mat-dialog-content>
     <mat-grid-list [cols]="4" >
       <mat-grid-tile *ngFor="let sensor of data.sensors">
         <mat-card>
-          <mat-card-title>{{sensor.assetId}}</mat-card-title>
+          <h3><mat-card-title>{{sensor.assetId}}</mat-card-title></h3>
           <mat-card-content>
             <h5>Category: {{sensor.category}}</h5>
-            Reading: 234
+            <p>Reading: 24.5</p>
           </mat-card-content>
           <mat-card-footer>
             <button mat-raised-button color="primary">Details</button>
