@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { VisualiserComponent } from './visualiser/visualiser.component'
+import { VisualiserComponent } from './visualiser/visualiser.component';
 
 @Component({
   selector: 'app-root',
