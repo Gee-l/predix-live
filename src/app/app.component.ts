@@ -18,55 +18,9 @@ export class AppComponent {
     zoom = 17;
     streetControl = false;
 
-<<<<<<< HEAD
-    constructor(public sensorDialog: MatDialog) {
-    }
-
-    markers = [
-        {
-            nodeName: 'node6',
-            lat: -33.50489829329936,
-            lng: 19.564772844314575
-        },
-        {
-            nodeName: 'node1',
-            lat: -33.50548873507302,
-            lng: 19.563560485839844
-        },
-        {
-            nodeName: 'node2',
-            lat: -33.50622230863511,
-            lng: 19.56491231918335
-        },
-        {
-            nodeName: 'node3',
-            lat: -33.507716274589654,
-            lng: 19.565019607543945
-        },
-        {
-            nodeName: 'node4',
-            lat: -33.507134793900434,
-            lng: 19.566253423690796
-        }
-    ];
-
-    nodeSelected(uri) {
-        const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
-            width: '250px',
-            data: { name: uri}
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('Dialog Closed');
-          console.log('Result');
-        });
-    }
-}
-=======
   onChoseLocation(e){
     this.lat = e.coords.lat;
     this.lng = e.coords.lng;
     console.log(e);
   }
 }
->>>>>>> b1051769a25dbd253e0e29edacbc8ee0907abf27
