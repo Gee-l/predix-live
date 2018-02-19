@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NodesEndpointService } from '../nodes-endpoint.service'
+import { Farm } from '../models/farm'
 
 @Component({
   selector: 'visualiser',
@@ -23,5 +24,15 @@ export class VisualiserComponent implements OnInit {
         },
         () => console.log('successfull')
       )
+    this.showFarm();
+  }
+
+  sayHello(event) {
+    console.log("Hello");
+  }
+
+  showFarm() {
+    let farm: Farm = this.nodeEndPointService.getFarm();
+    console.log(farm);
   }
 }

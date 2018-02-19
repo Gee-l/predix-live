@@ -6,5 +6,5 @@ export class Farm {
     name: string
     description: string
     location: {}
-    nodes: Node[];
+    nodes: Node[]
 }
