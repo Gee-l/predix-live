@@ -8,15 +8,18 @@ import { VisualiserComponent } from './visualiser/visualiser.component';
 import { NodesEndpointService } from './nodes-endpoint.service';
 import { AgmCoreModule  } from '@agm/core';
 import 'hammerjs';
-import { MatToolbarModule, MatIconModule, MatMenuModule, MatButtonModule, MatDialogModule, MatCardModule, MatGridListModule } from '@angular/material';
+import { MatTabsModule, MatToolbarModule, MatIconModule, MatMenuModule, MatButtonModule, MatDialogModule, MatCardModule, MatGridListModule } from '@angular/material';
 import { SensorsPopupComponent } from './sensors-popup/sensors-popup.component';
+import { SensorinfoComponent } from './sensorinfo/sensorinfo.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     VisualiserComponent,
-    SensorsPopupComponent
+    SensorsPopupComponent,
+    SensorinfoComponent
   ],
   imports: [
       BrowserModule,
@@ -27,11 +30,18 @@ import { SensorsPopupComponent } from './sensors-popup/sensors-popup.component';
       MatButtonModule,
       MatDialogModule,
       MatCardModule,
+      MatTabsModule,
       MatGridListModule,
       BrowserAnimationsModule,
       AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCcSfSqyWy0Yan5O-ReitEGoLZ1Y2GtMLg'
-    })
+    }),
+      RouterModule.forRoot([
+          {
+              path: 'details/:node',
+              component: SensorinfoComponent
+          }
+      ])
   ],
     entryComponents: [
       SensorsPopupComponent
