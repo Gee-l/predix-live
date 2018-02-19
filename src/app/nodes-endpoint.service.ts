@@ -3,20 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Farm } from './models/farm'
 import { Node } from './models/node'
 import { Sensor } from './models/sensor'
+//let async = require('../../node_modules/async');
 
 @Injectable()
 export class NodesEndpointService {
-  private url = "https://jsonplaceholder.typicode.com/posts";
-
+  bcxFarm: Farm;
   constructor(private http: HttpClient) { }
 
-  getAllNodes() {
-    return this.http.get(this.url);
-  }
-
-  getNode(node, limit) {
-    return this.http.get(this.url);//`http://smart-iot.bcx.co.za/iiot.cloud/services/sensors/node/${node}/1518688544/${limit}`);
-  }
 
   getFarm(): Farm {
     let farm: Farm = new Farm();
@@ -96,7 +89,6 @@ export class NodesEndpointService {
       ];
 
     APIJson.forEach((node, index) => {
-      console.log(" ---------------- Each node farm uri = ", node.farm);
       if(node.farm == farmUri)
         nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, this.getSensors(node.uri)));
     });
@@ -273,11 +265,61 @@ export class NodesEndpointService {
     
     let sensors: Sensor[] = [];
     sensorAPI.forEach((sensor, index) => {
-      console.log(" ---------------- Each sensor node uri = ", sensor.node);
       if(sensor.node == nodeUri)
         sensors.push(new Sensor(sensor.uri, sensor.assetId, sensor.category, sensor.dataType, parseInt(sensor.dataFrequency)));
     });
 
     return sensors;
+  }
+
+  getAPIFarm(){
+    this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/63f2a245-4f66-42ba-bf6f-decc73f09abd`)
+      .subscribe(data => {
+        this.bcxFarm = this.populateFarm(data);
+        console.log('Final Farm', this.bcxFarm);
+      },
+      error => console.log(error),
+      () => console.log("Finished....")
+    )
+  }
+
+  populateFarm(farmObject) {
+    let farm: Farm = new Farm();
+
+    farm.name = farmObject.name;
+    farm.uri = farmObject.uri;
+    farm.location = farmObject.location;
+    farm.description = farmObject.description;
+    farm.nodes = this.getNodesApi(farm.uri.split('/')[2]);
+    return farm;
+  }
+
+  getNodesApi(farmUri): Node[] {
+    let nodes: Node[] = [];
+    this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/${farmUri}`)
+      .subscribe(data => {
+        console.log("nodes for a farm", data);
+        //console.log('async', async);
+        this.populateNodeLocations(data);
+      },
+      error => console.log(error),
+      () => console.log("Finished....")
+    )
+    return nodes;
+  }
+
+  populateNodeLocations(data) {
+    let nodes: Node[] = [];
+    /*async.each(data.nodes, (node, callBack) => {
+      console.log('each node: ',node);
+      this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/node/${node.uri.split('/')[2]}`)
+        .subscribe(node => {
+          console.log(node);
+          //nodes.push(new Node(node.uri, node.name, node.manufacture, node.location, node.sensors))
+        }, 
+        error => console.log(error),
+        () => console.log("success")
+      )
+    })*/
   }
 }
