@@ -31,14 +31,6 @@ export class NodesEndpointService {
   getNodes(farmUri): Node[] {
     //Make a GEL query for nodes that match the given farm uri
     //Call get sensors for each node
-    /*nodes = [
-      {lat: -33.50489829329936, lng: 19.564772844314575},//Top right
-      {lat: -33.50548873507302, lng: 19.563560485839844},//Top left
-      {lat: -33.50622230863511, lng: 19.56491231918335},//Center
-      {lat: -33.507716274589654, lng: 19.565019607543945},//Bottom right
-      {lat: -33.507134793900434, lng: 19.566253423690796}//Bottom left
-      ]
-      */
      let nodes: Node[] = [];
       var APIJson = [
         {
@@ -108,11 +100,12 @@ export class NodesEndpointService {
       if(node.farm == farmUri)
         nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, this.getSensors(node.uri)));
     });
+
     return nodes;
   }
 
   getSensors(nodeUri): Sensor[] {
-    //Make a GEL query for sensors for a specific node uri
+    //Make a GEL query for sensors that match a specific node uri
     let sensorAPI = [
       {
         "uri": "/sensor/Bethlehem-Node1-Sensor1",

@@ -61,4 +61,9 @@ export class AppComponent {
           console.log('Result');
         });
     }
+  onChoseLocation(e){
+    this.lat = e.coords.lat;
+    this.lng = e.coords.lng;
+    console.log(e);
+  }
 }
