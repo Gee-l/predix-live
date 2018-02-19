@@ -18,6 +18,7 @@ export class AppComponent {
     zoom = 17;
     streetControl = false;
 
+<<<<<<< HEAD
     constructor(public sensorDialog: MatDialog) {
     }
 
@@ -61,3 +62,11 @@ export class AppComponent {
         });
     }
 }
+=======
+  onChoseLocation(e){
+    this.lat = e.coords.lat;
+    this.lng = e.coords.lng;
+    console.log(e);
+  }
+}
+>>>>>>> b1051769a25dbd253e0e29edacbc8ee0907abf27
