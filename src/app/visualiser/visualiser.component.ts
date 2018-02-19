@@ -9,12 +9,16 @@ import { Farm } from '../models/farm'
   providers: [NodesEndpointService]
 })
 
-export class VisualiserComponent {
+export class VisualiserComponent implements OnInit{
   sensors;
   constructor(private nodeEndPointService: NodesEndpointService) { }
 
-  showFarm() {
+  ngOnInit() {
     let farm: Farm = this.nodeEndPointService.getFarm();
     console.log(farm);
+    console.log('Getting centurion');
+    this.nodeEndPointService.getAPIFarm((error, farm) => {
+      (error)? console.log(error) : console.log('Centurion Farm', farm);
+    })
   }
 }

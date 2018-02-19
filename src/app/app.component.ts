@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
         const _farm = this.nodeEndpointService.getFarm();
         this.farm = _farm;
         this.markers = _farm.nodes;
-        this.nodeEndpointService.getAPIFarm();
     }
     nodeSelected(name, sensors) {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {

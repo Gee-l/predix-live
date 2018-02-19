@@ -3,16 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Farm } from './models/farm'
 import { Node } from './models/node'
 import { Sensor } from './models/sensor'
-//let async = require('../../node_modules/async');
+let async = require('../../node_modules/async');
 
 @Injectable()
 export class NodesEndpointService {
-<<<<<<< HEAD
   bcxFarm: Farm;
-=======
-  private url = 'https://jsonplaceholder.typicode.com/posts';
-
->>>>>>> 887cecfc9228f9c27476d8ef937c39236d30852a
   constructor(private http: HttpClient) { }
 
 
@@ -277,10 +272,12 @@ export class NodesEndpointService {
     return sensors;
   }
 
-  getAPIFarm(){
+  getAPIFarm(next){
     this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/63f2a245-4f66-42ba-bf6f-decc73f09abd`)
       .subscribe(data => {
-        this.bcxFarm = this.populateFarm(data);
+        this.populateFarm(data, (error, farm) => {
+          next(error, farm);
+        });
         console.log('Final Farm', this.bcxFarm);
       },
       error => console.log(error),
@@ -288,43 +285,63 @@ export class NodesEndpointService {
     )
   }
 
-  populateFarm(farmObject) {
+  populateFarm(farmObject, next) {
     let farm: Farm = new Farm();
 
     farm.name = farmObject.name;
     farm.uri = farmObject.uri;
     farm.location = farmObject.location;
     farm.description = farmObject.description;
-    farm.nodes = this.getNodesApi(farm.uri.split('/')[2]);
-    return farm;
+    this.getNodesApi(farm.uri.split('/')[2], (error, nodes) => {
+      farm.nodes = nodes;
+      next(error, farm);
+    });
+
   }
 
-  getNodesApi(farmUri): Node[] {
-    let nodes: Node[] = [];
+  getNodesApi(farmUri, callBack) {
     this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/${farmUri}`)
       .subscribe(data => {
         console.log("nodes for a farm", data);
-        //console.log('async', async);
-        this.populateNodeLocations(data);
+        console.log('async', async);
+        this.populateNodeLocations(data, (error, nodes) => {
+          if(error)
+            throw error;
+          else
+            callBack(null, nodes);
+        });
       },
       error => console.log(error),
       () => console.log("Finished....")
     )
-    return nodes;
   }
 
-  populateNodeLocations(data) {
+  populateNodeLocations(data, next) {
     let nodes: Node[] = [];
-    /*async.each(data.nodes, (node, callBack) => {
-      console.log('each node: ',node);
+    async.each(data.nodes, (node, callBack) => {
       this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/node/${node.uri.split('/')[2]}`)
-        .subscribe(node => {
-          console.log(node);
-          //nodes.push(new Node(node.uri, node.name, node.manufacture, node.location, node.sensors))
+        .subscribe(_node => {
+          let node:any = _node;
+          //console.log("child node", node);
+          nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, null));
+          callBack();
         }, 
         error => console.log(error),
         () => console.log("success")
       )
-    })*/
+    }, (error) => {
+      if(error)
+        console.log(error)
+      else {
+        //console.log('Finished nodes', nodes)
+        nodes.forEach((node) => {
+          data.nodes.forEach(innerNode => {
+            if(innerNode.uri == node.uri)
+              node.sensors = innerNode.sensors;
+          })
+        });
+        next(null, nodes);
+      }
+    })
   }
 }
