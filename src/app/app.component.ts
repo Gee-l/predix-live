@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { VisualiserComponent } from './visualiser/visualiser.component';
 import {SensorsPopupComponent} from './sensors-popup/sensors-popup.component';
+import { NodesEndpointService } from './nodes-endpoint.service';
 import { Farm } from './models/farm';
+import { Node } from './models/node';
 
 @Component({
   selector: 'app-root',
@@ -10,60 +12,31 @@ import { Farm } from './models/farm';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
-    farm = new Farm();
-    lat = this.farm.location['lat'];
-    lng = this.farm.location['lng'];
+export class AppComponent implements OnInit {
+    markers: Node[];
     typeId = 'satellite';
     minZoom = 15;
     maxZoom = 17;
     zoom = 17;
     streetControl = false;
+    farm: Farm;
 
-    constructor(public sensorDialog: MatDialog) {}
+    constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService ) {}
 
-    markers = [
-        {
-            nodeName: 'node6',
-            lat: -33.50489829329936,
-            lng: 19.564772844314575
-        },
-        {
-            nodeName: 'node1',
-            lat: -33.50548873507302,
-            lng: 19.563560485839844
-        },
-        {
-            nodeName: 'node2',
-            lat: -33.50622230863511,
-            lng: 19.56491231918335
-        },
-        {
-            nodeName: 'node3',
-            lat: -33.507716274589654,
-            lng: 19.565019607543945
-        },
-        {
-            nodeName: 'node4',
-            lat: -33.507134793900434,
-            lng: 19.566253423690796
-        }
-    ];
-
-    nodeSelected(uri) {
+    ngOnInit() {
+        const _farm = this.nodeEndpointService.getFarm();
+        this.farm = _farm;
+        this.markers = _farm.nodes;
+    }
+    nodeSelected(name, sensors) {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
-            width: '250px',
-            data: { name: uri}
+            width: '80%',
+            data: { name: name, sensors: sensors}
         });
-
+        console.log(this.farm.nodes[0]);
         dialogRef.afterClosed().subscribe(result => {
           console.log('Dialog Closed');
           console.log('Result');
         });
     }
-  onChoseLocation(e){
-    this.lat = e.coords.lat;
-    this.lng = e.coords.lng;
-    console.log(e);
-  }
 }

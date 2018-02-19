@@ -8,10 +8,11 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 })
 export class SensorsPopupComponent implements OnInit {
 
+
   constructor(public dialogRef: MatDialogRef<SensorsPopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any)  { }
 
   ngOnInit() {
-    console.log(this.data);
+    console.log(this.data.sensors);
   }
 
   closeSensorInfo() {

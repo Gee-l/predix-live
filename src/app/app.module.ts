@@ -8,7 +8,7 @@ import { VisualiserComponent } from './visualiser/visualiser.component';
 import { NodesEndpointService } from './nodes-endpoint.service';
 import { AgmCoreModule  } from '@agm/core';
 import 'hammerjs';
-import { MatToolbarModule, MatIconModule, MatMenuModule, MatButtonModule, MatDialogModule, MatCardModule } from '@angular/material';
+import { MatToolbarModule, MatIconModule, MatMenuModule, MatButtonModule, MatDialogModule, MatCardModule, MatGridListModule } from '@angular/material';
 import { SensorsPopupComponent } from './sensors-popup/sensors-popup.component';
 
 
@@ -27,6 +27,7 @@ import { SensorsPopupComponent } from './sensors-popup/sensors-popup.component';
       MatButtonModule,
       MatDialogModule,
       MatCardModule,
+      MatGridListModule,
       BrowserAnimationsModule,
       AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCcSfSqyWy0Yan5O-ReitEGoLZ1Y2GtMLg'

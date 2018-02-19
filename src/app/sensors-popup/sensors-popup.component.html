@@ -1,12 +1,17 @@
-<h3 matDialogTitle>Node Sensors</h3>
+<h3 matDialogTitle>Node: </h3>
 <mat-dialog-content>
-  <mat-card>
-    <mat-card-title>Moist Sensor</mat-card-title>
-    <mat-card-content>
-      Reading: 234
-    </mat-card-content>
-    <mat-card-footer>
-      <button mat-raised-button color="primary">Details</button>
-    </mat-card-footer>
-  </mat-card>
+    <mat-grid-list [cols]="4" >
+      <mat-grid-tile *ngFor="let sensor of data.sensors">
+        <mat-card>
+          <mat-card-title>{{sensor.assetId}}</mat-card-title>
+          <mat-card-content>
+            <h5>Category: {{sensor.category}}</h5>
+            Reading: 234
+          </mat-card-content>
+          <mat-card-footer>
+            <button mat-raised-button color="primary">Details</button>
+          </mat-card-footer>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
 </mat-dialog-content>

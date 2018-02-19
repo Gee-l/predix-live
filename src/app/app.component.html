@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-<agm-map [latitude]="lat" [longitude]="lng" (click)="onChoseLocation($event)">
-=======
 <mat-toolbar color="primary">
     <span>BCX</span>
     <span>
@@ -15,26 +12,20 @@
         </button>
     </span>
 </mat-toolbar>
-<<<<<<< HEAD
 <agm-map
-        [latitude]="lat"
-        [longitude]="lng"
+        [latitude]="farm.location.lat"
+        [longitude]="farm.location.lng"
         [mapTypeId]="typeId"
         [maxZoom]="maxZoom"
         [minZoom]="minZoom"
         [zoom]="zoom"
         [streetViewControl]="streetControl">
-    <agm-marker *ngFor="let marker of markers; let i of index"
-                [latitude]="marker.lat"
-                [longitude]="marker.lng"
-                [title]="marker.nodeName"
-                [label]="marker.nodeName"
-     (markerClick)="nodeSelected(marker.nodeName)"></agm-marker>
-=======
-<agm-map [latitude]="lat" [longitude]="lng" (mapClick)="onChoseLocation($event)">
->>>>>>> 0ab09399aaa1677d61a37a80c3c5c44bc2672fb5
-    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
->>>>>>> b1051769a25dbd253e0e29edacbc8ee0907abf27
+    <agm-marker *ngFor="let marker of farm.nodes; let i of index"
+                [latitude]="marker.location.lat"
+                [longitude]="marker.location.long"
+                [title]="marker.name"
+                [label]="marker.uri"
+     (markerClick)="nodeSelected(marker.name, marker.sensors)"></agm-marker>
 </agm-map>
 <mat-toolbar>
     <small>&copy; All Rights Reserved, BCX 2018</small>
