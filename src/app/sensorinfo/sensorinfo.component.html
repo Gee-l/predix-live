@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+  <span>BCX</span>
+</mat-toolbar><br>
+<mat-tab-group>
+  <mat-tab label="Readings">
+    <h4>Sensor Readings Info</h4>
+    <canvas #sensorcn>{{sensorInfo}}</canvas>
+  </mat-tab>
+  <mat-tab label="States">
+    <h4>On/Off State</h4>
+    <canvas #statecn>{{stateInfo}}</canvas>
+  </mat-tab>
+  <mat-tab label="Power">
+    <h4>Battery Power</h4>
+    <canvas #batterycn>{{batteryInfo}}</canvas>
+  </mat-tab>
+</mat-tab-group>
+<mat-toolbar>
+  <small>&copy; All Rights Reserved, BCX</small>
+</mat-toolbar>

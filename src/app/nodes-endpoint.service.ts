@@ -6,7 +6,7 @@ import { Sensor } from './models/sensor'
 
 @Injectable()
 export class NodesEndpointService {
-  private url = "https://jsonplaceholder.typicode.com/posts";
+  private url = 'https://jsonplaceholder.typicode.com/posts';
 
   constructor(private http: HttpClient) { }
 
@@ -20,7 +20,7 @@ export class NodesEndpointService {
 
   getFarm(): Farm {
     let farm: Farm = new Farm();
-    farm.name = "I dont know the name";
+    farm.name = "Farm 1";
     farm.description = "this is the farm description";
     farm.uri = "/farm/1";
     farm.location = {lat: -33.5049805, lng: 19.5635469 }
