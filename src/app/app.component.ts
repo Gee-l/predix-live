@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { VisualiserComponent } from './visualiser/visualiser.component';
 import {SensorsPopupComponent} from './sensors-popup/sensors-popup.component';
+import { Farm } from './models/farm';
 
 @Component({
   selector: 'app-root',
@@ -10,17 +11,16 @@ import {SensorsPopupComponent} from './sensors-popup/sensors-popup.component';
 })
 
 export class AppComponent {
-    lat = -33.5049805;
-    lng = 19.5635469;
+    farm = new Farm();
+    lat = this.farm.location['lat'];
+    lng = this.farm.location['lng'];
     typeId = 'satellite';
     minZoom = 15;
     maxZoom = 17;
     zoom = 17;
     streetControl = false;
 
-<<<<<<< HEAD
-    constructor(public sensorDialog: MatDialog) {
-    }
+    constructor(public sensorDialog: MatDialog) {}
 
     markers = [
         {
@@ -62,11 +62,3 @@ export class AppComponent {
         });
     }
 }
-=======
-  onChoseLocation(e){
-    this.lat = e.coords.lat;
-    this.lng = e.coords.lng;
-    console.log(e);
-  }
-}
->>>>>>> b1051769a25dbd253e0e29edacbc8ee0907abf27
