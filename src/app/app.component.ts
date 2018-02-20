@@ -34,14 +34,13 @@ export class AppComponent implements OnInit {
         let editedNodes: Node[] = [];
         this.nodeEndpointService.getAPIFarm()
             .subscribe((farm:any) => {
-                console.log(farm);
                 this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
                 this.nodeEndpointService.popNodes(this.farm.nodes)
                     .subscribe(node => {
                         editedNodes.push(node);
                         this.farm.nodes = editedNodes;
                     })
-                console.log(this.farm);
+                    console.log(this.farm);
             });
     }
     nodeSelected(name, sensors) {
