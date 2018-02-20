@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
                     .subscribe(node => {
                         editedNodes.push(node);
                         this.farm.nodes = editedNodes;
+                        this.markers = editedNodes;
                     })
                     console.log(this.farm);
             });
