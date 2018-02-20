@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class AppComponent implements OnInit {
-    public markers: any[];
+    public markers;
     public typeId: string;
     public minZoom: number;
     public maxZoom: number;
@@ -34,9 +34,9 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        let editedNodes: Node[] = [];
+        const editedNodes: Node[] = [];
         this.nodeEndpointService.getAPIFarm()
-            .subscribe((farm:any) => {
+            .subscribe((farm: any) => {
                 this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
                 /*this.nodeEndpointService.popSensors(this.farm.nodes)
                     .subscribe((node: Observable<any> ) => {
@@ -61,5 +61,19 @@ export class AppComponent implements OnInit {
             console.log('Dialog Closed');
             console.log('Result');
         });
+    }
+    displayInfoWindow(nodeInfo, gm) {
+        if (gm.lastOpen != null) {
+            gm.lastOpen.close();
+        }
+        gm.lastOpen = nodeInfo;
+        nodeInfo.open();
+    }
+    closeInfoWindow(nodeInfo, gm) {
+        setTimeout((data) => {
+            if (gm.lastOpen != null) {
+                gm.lastOpen.close();
+            }
+        }, 1000);
     }
 }
