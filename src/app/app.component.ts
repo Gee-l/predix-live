@@ -36,7 +36,6 @@ export class AppComponent implements OnInit {
             .subscribe((farm:any) => {
                 console.log(farm);
                 this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
-
                 this.nodeEndpointService.popNodes(this.farm.nodes)
                     .subscribe(node => {
                         editedNodes.push(node);
