@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Farm } from './models/farm'
 import { Node } from './models/node'
 import { Sensor } from './models/sensor'
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators/map';
 import { Observable as Rx } from 'rxjs'
 import { parse } from 'path';
+import { mergeMap } from 'rxjs/operator/mergeMap';
 let async = require('../../node_modules/async');
 
 @Injectable()
@@ -15,7 +18,6 @@ export class NodesEndpointService {
 
   getFarm(): Farm {
     let farm: Farm = new Farm("/farm/1", "Farm 1", "this is the farm description", {lat: -33.5049805, lng: 19.5635469 }, this.getNodes("/farm/1"));
-    let array = ["Nhlaka", "Nonto", "Seth", "Micheal"];
     return farm;
   }
 
@@ -28,6 +30,7 @@ export class NodesEndpointService {
           "uri": "/node/1",
           "name": "Node1",
           "manufacturer": "COMSOL",
+          "status": "ON",
           "location": {
             "lat":-33.50489829329936,
             "long": 19.564772844314575
@@ -38,6 +41,7 @@ export class NodesEndpointService {
           "uri": "/node/2",
           "name": "Node2",
           "manufacturer": "COMSOL",
+          "status": "OFF",
           "location": {
             "lat": -33.50548873507302,
             "long": 19.563560485839844
@@ -48,6 +52,7 @@ export class NodesEndpointService {
           "uri": "/node/3",
           "name": "Node3",
           "manufacturer": "COMSOL",
+          "status": "ON",
           "location": {
             "lat": -33.50622230863511,
             "long": 19.56491231918335
@@ -58,6 +63,7 @@ export class NodesEndpointService {
           "uri": "/node/4",
           "name": "Node4",
           "manufacturer": "COMSOL",
+          "status": "OFF",
           "location": {
             "lat": -33.507716274589654,
             "long": 19.565019607543945
@@ -68,6 +74,7 @@ export class NodesEndpointService {
           "uri": "/node/5",
           "name": "Node5",
           "manufacturer": "COMSOL",
+          "status": "ON",
           "location": {
             "lat":-33.507134793900434,
             "long": 19.566253423690796
@@ -78,6 +85,7 @@ export class NodesEndpointService {
           "uri": "/node/6",
           "name": "Node6",
           "manufacturer": "COMSOL",
+          "status": "ON",
           "location": {
             "lat": -32.434396,
             "long": 8.951497
@@ -275,21 +283,33 @@ export class NodesEndpointService {
     return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/63f2a245-4f66-42ba-bf6f-decc73f09abd`);
   }
 
-  popNodes(nodes): Observable<any> {
-    return Rx.from(nodes)
+  popSensors(nodes): Observable<any> {
+    /*return Rx.from(nodes)
       .flatMap((node:any) => {
-        return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/node/${node.uri.split('/')[2]}`);
+        return Rx.of(node.sensors)
+          .flatMap((sensor:any) => {
+            console.log("sensor: ", sensor, "node : ", node)
+            return this.popSensor(node.name, sensor.tag)
+              .pipe(map((res => {
+                node.values = res;
+                return Rx.of(node);
+              })))
+          })
+      })*/
+    return Rx.from(nodes)
+      .map((node:any) => {
+        return Rx.from(node.sensors)
+          .flatMap((sensor:any) => {
+            return this.popSensor(node.name, sensor.tag)
+              .pipe(map((res => {
+                node.values = res;
+                  return Rx.of(node);
+              })))
+          })
       });
   }
 
   popSensor(nodeName, tag): Observable<any> {
     return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?node=${nodeName}&order=asc&sensor=${tag}&limit=4`);
-  }
-
-  popSensors(nodeName, sensors) {
-    return Rx.from(sensors)
-      .flatMap((sensor:any) => {
-        return this.popSensor(nodeName, sensor.tag)
-      })
   }
 }

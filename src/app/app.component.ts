@@ -5,6 +5,9 @@ import { NodesEndpointService } from './nodes-endpoint.service';
 import { Farm } from './models/farm';
 import { Node } from './models/node';
 import { Router } from '@angular/router';
+import { Observable as Rx } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +16,7 @@ import { Router } from '@angular/router';
 })
 
 export class AppComponent implements OnInit {
-    public markers: Node[];
+    public markers: any[];
     public typeId: string;
     public minZoom: number;
     public maxZoom: number;
@@ -35,13 +38,16 @@ export class AppComponent implements OnInit {
         this.nodeEndpointService.getAPIFarm()
             .subscribe((farm:any) => {
                 this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
-                this.nodeEndpointService.popNodes(this.farm.nodes)
-                    .subscribe(node => {
-                        editedNodes.push(node);
-                        this.farm.nodes = editedNodes;
-                        this.markers = editedNodes;
-                    })
-                    console.log(this.farm);
+                /*this.nodeEndpointService.popSensors(this.farm.nodes)
+                    .subscribe((node: Observable<any> ) => {
+                        node.subscribe(nodes => {
+                            nodes.subscribe(eachNode => {
+                                editedNodes.push(eachNode);
+                            })
+                            //this.markers = editedNodes; 
+                            console.log("markers", editedNodes);                           
+                        })
+                    });*/
             });
     }
     nodeSelected(name, sensors) {

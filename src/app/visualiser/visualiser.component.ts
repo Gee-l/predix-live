@@ -15,7 +15,7 @@ export class VisualiserComponent implements OnInit{
   constructor(private nodeEndPointService: NodesEndpointService) { }
 
   ngOnInit() {
-    let farm: Farm = this.nodeEndPointService.getFarm();
+    /*let farm: Farm = this.nodeEndPointService.getFarm();
     let centurion: Farm  = null;
     let nodeList: Node[] = [];
     console.log(farm);
@@ -31,6 +31,6 @@ export class VisualiserComponent implements OnInit{
             //GET SENSOR VALUE BY TAG
             centurion.nodes = nodeList;
         });
-    });
+    });*/
   }
 }
