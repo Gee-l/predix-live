@@ -1,34 +1,47 @@
 <mat-toolbar color="primary">
     <span>BCX</span>
-    <span>
         <mat-menu #appMenu="matMenu">
-  <ng-template matMenuContent>
-    <button mat-menu-item>Settings</button>
-    <button mat-menu-item>Log off</button>
-  </ng-template>
-</mat-menu>
-        <button mat-icon-button [matMenuTriggerFor]="appMenu" align="end" layout-align="start center">
-            <mat-icon>more_vert</mat-icon>
-        </button>
-    </span>
+        <ng-template matMenuContent>
+            <button mat-menu-item>Settings</button>
+            <button mat-menu-item>Log off</button>
+        </ng-template>
+    </mat-menu>
 </mat-toolbar>
-<div *ngIf="farm != undefined || farm.location != undefined">
+<div *ngIf="farm != undefined">
     <agm-map
-            [latitude]="farm.location.latitude"git
+            [latitude]="farm.location.latitude"
             [longitude]="farm.location.longitude"
             [mapTypeId]="typeId"
             [maxZoom]="maxZoom"
             [minZoom]="minZoom"
             [zoom]="zoom"
-            [streetViewControl]="streetControl">
-        <agm-marker *ngFor="let marker of markers; let i of index"
-                    [latitude]="marker.location.latitude"
-                    [longitude]="marker.location.longitude"
-                    [title]="marker.name"
-                    [label]="marker.uri"
-                    (markerClick)="nodeSelected(marker.name, marker.sensors)">
-
-        </agm-marker>
+            [streetViewControl]="streetControl" #gm>
+            <agm-marker *ngFor="let marker of markers; let i of index"
+                        [latitude]="marker.location.latitude"
+                        [longitude]="marker.location.longitude"
+                        [title]="marker.name"
+                        (markerClick)="nodeSelected(marker.name, marker.sensors, gm)"
+                        (mouseOver)="displayInfoWindow(nodeInfo, gm)"
+                        (mouseOut)="closeInfoWindow(nodeInfo, gm)">
+               <agm-info-window #nodeInfo [disableAutoPan]="false" style="text-align: center;">
+                   <h4 style="text-align: center">Node: {{marker.name}}</h4>
+                   <span *ngIf="marker.sensors.length; else noSensors">
+                       <p>{{marker.sensors.length}} Sensors running On this Node</p>
+                       <span *ngIf="marker.status == 'ON'; else nodeOffline">
+                           <strong style="color: forestgreen;"><mat-icon>router</mat-icon>Node is Online</strong>
+                       </span>
+                       <ng-template #nodeOffline>
+                           <strong style="color: #ff513c;">Node is Offline</strong>
+                       </ng-template>
+                   </span>
+                   <ng-template #noSensors>
+                       <p style="color: #a50610">No sensors on this Node</p>
+                       <span *ngIf="marker.status == 'ON'; else nodeOffline">
+                           <strong style="color: forestgreen;"><mat-icon>router</mat-icon>Node is Online</strong>
+                       </span>
+                   </ng-template>
+               </agm-info-window>
+            </agm-marker>
     </agm-map>
 </div>
 <mat-toolbar>

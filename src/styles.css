@@ -7,7 +7,7 @@
     background-color: rgba(0, 0, 0, 1);
 }
 .mat-dialog-container {
-    background-color: firebrick;
+    background-color: rgba(178, 34, 34, 0.8);
     color: gainsboro;
 }
 .mat-card {
@@ -31,4 +31,20 @@
     padding-top: 68px;
     position: relative;
     bottom: 0px;
+}
+.sensor_name {
+    font-size: 2em;
+}
+.mat-tooltip {
+    z-index: 1000;
+}
+.gm-style .gm-style-iw {
+    text-align: center;
+}
+@keyframes onlineNode {
+    from {color: #71ff80;}
+    to {color: green;}
+}
+.nodeAnimate{
+    animation: onlineNode 3s ease-in-out infinite alternate;
 }

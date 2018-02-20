@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 
 export class AppComponent implements OnInit {
-    public markers: Node[];
+    public markers;
     public typeId: string;
     public minZoom: number;
     public maxZoom: number;
@@ -31,16 +31,16 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        let editedNodes: Node[] = [];
+        const editedNodes: Node[] = [];
         this.nodeEndpointService.getAPIFarm()
-            .subscribe((farm:any) => {
+            .subscribe((farm: any) => {
                 this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
                 this.nodeEndpointService.popNodes(this.farm.nodes)
                     .subscribe(node => {
                         editedNodes.push(node);
                         this.farm.nodes = editedNodes;
                         this.markers = editedNodes;
-                    })
+                    });
                     console.log(this.farm);
             });
     }
@@ -55,5 +55,19 @@ export class AppComponent implements OnInit {
             console.log('Dialog Closed');
             console.log('Result');
         });
+    }
+    displayInfoWindow(nodeInfo, gm) {
+        if (gm.lastOpen != null) {
+            gm.lastOpen.close();
+        }
+        gm.lastOpen = nodeInfo;
+        nodeInfo.open();
+    }
+    closeInfoWindow(nodeInfo, gm) {
+        setTimeout((data) => {
+            if (gm.lastOpen != null) {
+                gm.lastOpen.close();
+            }
+        }, 1000);
     }
 }

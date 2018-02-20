@@ -3,18 +3,25 @@
   <p matDialogTitle><mat-icon>device_hub</mat-icon> {{data.name}} </p>
   <mat-dialog-content>
     <mat-grid-list [cols]="cnms">
-      <mat-grid-tile *ngFor="let sensor of data.sensors">
+      <span *ngIf="data.sensors.length; else noSensors">
+        <mat-grid-tile *ngFor="let sensor of data.sensors">
         <mat-card>
-          <h3><mat-card-title><mat-icon>router</mat-icon> {{sensor.tag}}</mat-card-title></h3>
+          <h6 style="text-align: center"><mat-card-title class="sensor_name"><mat-icon class="nodeAnimate">router</mat-icon><br> {{sensor.tag}}</mat-card-title></h6>
           <mat-card-content>
-            <h5>Category: {{sensor.category}}</h5>
-            <p>Reading: 24.5</p>
+            <h5 style="text-align: center">Type of sensor<br> {{sensor.category | uppercase}}</h5>
+            <p>Last Reading: <strong>24.5</strong></p>
           </mat-card-content>
-          <mat-card-footer>
+          <mat-card-footer style="align-content: center">
             <button mat-raised-button color="primary" routerLink="details/{{sensor}}" (click)="sensorDetails()">Details</button>
           </mat-card-footer>
         </mat-card>
       </mat-grid-tile>
+      </span>
+      <ng-template #noSensors>
+        <hr>
+        <h1 style="text-align: center; color: black">No Sensors Available</h1>
+      <hr>
+      </ng-template>
     </mat-grid-list>
   </mat-dialog-content>
 </div>
