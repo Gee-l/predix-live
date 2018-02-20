@@ -37,8 +37,8 @@ export class AppComponent implements OnInit {
         console.log(this.farm.nodes[0]);
         dialogRef.afterClosed().subscribe(result => {
             console.log(this.router.navigate(['/']));
-          console.log('Dialog Closed');
-          console.log('Result');
+            console.log('Dialog Closed');
+            console.log('Result');
         });
     }
 }

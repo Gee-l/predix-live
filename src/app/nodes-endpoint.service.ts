@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Farm } from './models/farm'
 import { Node } from './models/node'
 import { Sensor } from './models/sensor'
+import { Observable } from 'rxjs/Observable';
+import { Observable as Rx } from 'rxjs'
+import { parse } from 'path';
 let async = require('../../node_modules/async');
 
 @Injectable()
@@ -10,14 +13,9 @@ export class NodesEndpointService {
   bcxFarm: Farm;
   constructor(private http: HttpClient) { }
 
-
   getFarm(): Farm {
-    let farm: Farm = new Farm();
-    farm.name = "Farm 1";
-    farm.description = "this is the farm description";
-    farm.uri = "/farm/1";
-    farm.location = {lat: -33.5049805, lng: 19.5635469 }
-    farm.nodes = this.getNodes(farm.uri);
+    let farm: Farm = new Farm("/farm/1", "Farm 1", "this is the farm description", {lat: -33.5049805, lng: 19.5635469 }, this.getNodes("/farm/1"));
+    let array = ["Nhlaka", "Nonto", "Seth", "Micheal"];
     return farm;
   }
 
@@ -272,76 +270,26 @@ export class NodesEndpointService {
     return sensors;
   }
 
-  getAPIFarm(next){
-    this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/63f2a245-4f66-42ba-bf6f-decc73f09abd`)
-      .subscribe(data => {
-        this.populateFarm(data, (error, farm) => {
-          next(error, farm);
-        });
-        console.log('Final Farm', this.bcxFarm);
-      },
-      error => console.log(error),
-      () => console.log("Finished....")
-    )
+  getAPIFarm(){
+    let _farm:Farm = null;
+    return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/63f2a245-4f66-42ba-bf6f-decc73f09abd`);
   }
 
-  populateFarm(farmObject, next) {
-    let farm: Farm = new Farm();
-
-    farm.name = farmObject.name;
-    farm.uri = farmObject.uri;
-    farm.location = farmObject.location;
-    farm.description = farmObject.description;
-    this.getNodesApi(farm.uri.split('/')[2], (error, nodes) => {
-      farm.nodes = nodes;
-      next(error, farm);
-    });
-
+  popNodes(nodes): Observable<any> {
+    return Rx.from(nodes)
+      .flatMap((node:any) => {
+        return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/node/${node.uri.split('/')[2]}`);
+      });
   }
 
-  getNodesApi(farmUri, callBack) {
-    this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/${farmUri}`)
-      .subscribe(data => {
-        console.log("nodes for a farm", data);
-        console.log('async', async);
-        this.populateNodeLocations(data, (error, nodes) => {
-          if(error)
-            throw error;
-          else
-            callBack(null, nodes);
-        });
-      },
-      error => console.log(error),
-      () => console.log("Finished....")
-    )
+  popSensor(nodeName, tag): Observable<any> {
+    return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?node=${nodeName}&order=asc&sensor=${tag}&limit=4`);
   }
 
-  populateNodeLocations(data, next) {
-    let nodes: Node[] = [];
-    async.each(data.nodes, (node, callBack) => {
-      this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/node/${node.uri.split('/')[2]}`)
-        .subscribe(_node => {
-          let node:any = _node;
-          //console.log("child node", node);
-          nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, null));
-          callBack();
-        }, 
-        error => console.log(error),
-        () => console.log("success")
-      )
-    }, (error) => {
-      if(error)
-        console.log(error)
-      else {
-        //console.log('Finished nodes', nodes)
-        nodes.forEach((node) => {
-          data.nodes.forEach(innerNode => {
-            if(innerNode.uri == node.uri)
-              node.sensors = innerNode.sensors;
-          })
-        });
-        next(null, nodes);
-      }
-    })
+  popSensors(nodeName, sensors) {
+    return Rx.from(sensors)
+      .flatMap((sensor:any) => {
+        return this.popSensor(nodeName, sensor.tag)
+      })
   }
 }
