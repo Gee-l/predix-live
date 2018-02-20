@@ -38,16 +38,16 @@ export class AppComponent implements OnInit {
         this.nodeEndpointService.getAPIFarm()
             .subscribe((farm: any) => {
                 this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
-                /*this.nodeEndpointService.popSensors(this.farm.nodes)
+                this.nodeEndpointService.popSensors(this.farm.nodes)
                     .subscribe((node: Observable<any> ) => {
                         node.subscribe(nodes => {
                             nodes.subscribe(eachNode => {
                                 editedNodes.push(eachNode);
-                            })
-                            //this.markers = editedNodes; 
-                            console.log("markers", editedNodes);                           
-                        })
-                    });*/
+                            });
+                            this.markers = editedNodes;
+                            console.log("markers", editedNodes);
+                        });
+                    });
             });
     }
     nodeSelected(name, sensors) {

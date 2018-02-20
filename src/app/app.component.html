@@ -20,7 +20,7 @@
                         [latitude]="marker.location.latitude"
                         [longitude]="marker.location.longitude"
                         [title]="marker.name"
-                        (markerClick)="nodeSelected(marker.name, marker.sensors, gm)"
+                        (markerClick)="nodeSelected(marker.name, marker.sensors)"
                         (mouseOver)="displayInfoWindow(nodeInfo, gm)"
                         (mouseOut)="closeInfoWindow(nodeInfo, gm)">
                <agm-info-window #nodeInfo [disableAutoPan]="false" style="text-align: center;">
