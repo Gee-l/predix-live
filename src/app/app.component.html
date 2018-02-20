@@ -12,7 +12,7 @@
         </button>
     </span>
 </mat-toolbar>
-<div *ngIf="farm != undefined">
+<div *ngIf="farm != undefined || farm.location != undefined">
     <agm-map
             [latitude]="farm.location.latitude"
             [longitude]="farm.location.longitude"
@@ -26,7 +26,9 @@
                     [longitude]="marker.location.longitude"
                     [title]="marker.name"
                     [label]="marker.uri"
-                    (markerClick)="nodeSelected(marker.name, marker.sensors)"></agm-marker>
+                    (markerClick)="nodeSelected(marker.name, marker.sensors)">
+
+        </agm-marker>
     </agm-map>
 </div>
 <mat-toolbar>

@@ -35,9 +35,8 @@ export class AppComponent implements OnInit {
             if (error) {
                 console.log(error);
             } else {
-                _farm = farm;
-                this.farm = _farm;
-                this.markers = _farm.nodes;
+                this.farm = farm;
+                this.markers = farm.nodes;
                 console.log('Data Getting');
                 console.log(this.farm);
             }
@@ -52,7 +51,7 @@ export class AppComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log(this.router.navigate(['/']));
           console.log('Dialog Closed');
-          console.log('Result');
+          console.log('Result' + result);
         });
     }
 }
