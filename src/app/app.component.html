@@ -12,21 +12,23 @@
         </button>
     </span>
 </mat-toolbar>
-<agm-map
-        [latitude]="farm.location.lat"
-        [longitude]="farm.location.lng"
-        [mapTypeId]="typeId"
-        [maxZoom]="maxZoom"
-        [minZoom]="minZoom"
-        [zoom]="zoom"
-        [streetViewControl]="streetControl">
-    <agm-marker *ngFor="let marker of farm.nodes; let i of index"
-                [latitude]="marker.location.lat"
-                [longitude]="marker.location.long"
-                [title]="marker.name"
-                [label]="marker.uri"
-     (markerClick)="nodeSelected(marker.name, marker.sensors)"></agm-marker>
-</agm-map>
+<div *ngIf="farm != undefined">
+    <agm-map
+            [latitude]="farm.location.latitude"
+            [longitude]="farm.location.longitude"
+            [mapTypeId]="typeId"
+            [maxZoom]="maxZoom"
+            [minZoom]="minZoom"
+            [zoom]="zoom"
+            [streetViewControl]="streetControl">
+        <agm-marker *ngFor="let marker of markers; let i of index"
+                    [latitude]="marker.location.latitude"
+                    [longitude]="marker.location.longitude"
+                    [title]="marker.name"
+                    [label]="marker.uri"
+                    (markerClick)="nodeSelected(marker.name, marker.sensors)"></agm-marker>
+    </agm-map>
+</div>
 <mat-toolbar>
     <small>&copy; All Rights Reserved, BCX 2018</small>
 </mat-toolbar>
