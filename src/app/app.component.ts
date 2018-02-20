@@ -31,17 +31,11 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.nodeEndpointService.getAPIFarm((error, farm) => {
-            if (error) {
-                console.log(error);
-            } else {
-                _farm = farm;
-                this.farm = _farm;
-                this.markers = _farm.nodes;
-                console.log('Data Getting');
-                console.log(this.farm);
-            }
-        });
+        this.nodeEndpointService.getAPIFarm()
+            .subscribe((farm:any) => {
+                console.log(farm);
+                //this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
+            });
     }
     nodeSelected(name, sensors) {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
