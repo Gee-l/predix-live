@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NodesEndpointService } from '../nodes-endpoint.service'
 import { Farm } from '../models/farm'
+import { Node } from '../models/node'
 
 @Component({
   selector: 'visualiser',
@@ -15,10 +16,21 @@ export class VisualiserComponent implements OnInit{
 
   ngOnInit() {
     let farm: Farm = this.nodeEndPointService.getFarm();
+    let centurion: Farm  = null;
+    let nodeList: Node[] = [];
     console.log(farm);
     console.log('Getting centurion');
-    this.nodeEndPointService.getAPIFarm((error, farm) => {
-      (error)? console.log(error) : console.log('Centurion Farm', farm);
-    })
+    //GET FARM
+    this.nodeEndPointService.getAPIFarm()
+      .subscribe((farm: any) => {
+        centurion = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
+        //SET NODE LOCATION
+        this.nodeEndPointService.popNodes(centurion.nodes)
+          .subscribe(node => {
+            nodeList.push(new Node(node.uri, node.name, node.manufacturer, node.location, node.sensors));
+            //GET SENSOR VALUE BY TAG
+            centurion.nodes = nodeList;
+        });
+    });
   }
 }

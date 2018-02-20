@@ -31,16 +31,11 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.nodeEndpointService.getAPIFarm((error, farm) => {
-            if (error) {
-                console.log(error);
-            } else {
-                this.farm = farm;
-                this.markers = farm.nodes;
-                console.log('Data Getting');
-                console.log(this.farm);
-            }
-        });
+        this.nodeEndpointService.getAPIFarm()
+            .subscribe((farm:any) => {
+                console.log(farm);
+                //this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
+            });
     }
     nodeSelected(name, sensors) {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
@@ -50,8 +45,8 @@ export class AppComponent implements OnInit {
         console.log(this.farm.nodes[0]);
         dialogRef.afterClosed().subscribe(result => {
             console.log(this.router.navigate(['/']));
-          console.log('Dialog Closed');
-          console.log('Result' + result);
+            console.log('Dialog Closed');
+            console.log('Result');
         });
     }
 }
