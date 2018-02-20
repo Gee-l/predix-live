@@ -1,10 +1,11 @@
 <div *ngIf="showThis">
-  <h3 matDialogTitle>{{data.fname}}: {{data.name}} </h3>
+  <p [align]="'center'"> {{data.fname}}</p>
+  <p matDialogTitle><mat-icon>device_hub</mat-icon> {{data.name}} </p>
   <mat-dialog-content>
     <mat-grid-list [cols]="cnms">
       <mat-grid-tile *ngFor="let sensor of data.sensors">
         <mat-card>
-          <h3><mat-card-title>{{sensor.assetId}}</mat-card-title></h3>
+          <h3><mat-card-title><mat-icon>router</mat-icon> {{sensor.tag}}</mat-card-title></h3>
           <mat-card-content>
             <h5>Category: {{sensor.category}}</h5>
             <p>Reading: 24.5</p>

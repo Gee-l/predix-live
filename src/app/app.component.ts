@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { VisualiserComponent } from './visualiser/visualiser.component';
 import {SensorsPopupComponent} from './sensors-popup/sensors-popup.component';
 import { NodesEndpointService } from './nodes-endpoint.service';
 import { Farm } from './models/farm';
@@ -14,20 +13,35 @@ import { Router } from '@angular/router';
 })
 
 export class AppComponent implements OnInit {
-    markers: Node[];
-    typeId = 'satellite';
-    minZoom = 15;
-    maxZoom = 17;
-    zoom = 17;
-    streetControl = false;
-    farm: Farm;
+    public markers: Node[];
+    public typeId: string;
+    public minZoom: number;
+    public maxZoom: number;
+    public zoom: number;
+    public streetControl: boolean;
+    public farm: Farm;
 
-    constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private router: Router ) {}
+    constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private router: Router ) {
+        this.typeId = 'satellite';
+        this.minZoom = 15;
+        this.maxZoom = 17;
+        this.zoom = 17;
+        this.streetControl  = false;
+        this.farm = null;
+    }
 
     ngOnInit() {
-        const _farm = this.nodeEndpointService.getFarm();
-        this.farm = _farm;
-        this.markers = _farm.nodes;
+        this.nodeEndpointService.getAPIFarm((error, farm) => {
+            if (error) {
+                console.log(error);
+            } else {
+                _farm = farm;
+                this.farm = _farm;
+                this.markers = _farm.nodes;
+                console.log('Data Getting');
+                console.log(this.farm);
+            }
+        });
     }
     nodeSelected(name, sensors) {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
