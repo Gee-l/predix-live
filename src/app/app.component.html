@@ -9,16 +9,16 @@
 </mat-toolbar>
 <div *ngIf="farm != undefined">
     <agm-map
-            [latitude]="farm.location.lat"
-            [longitude]="farm.location.long"
+            [latitude]="farm.location.latitude"
+            [longitude]="farm.location.longitude"
             [mapTypeId]="typeId"
             [maxZoom]="maxZoom"
             [minZoom]="minZoom"
             [zoom]="zoom"
             [streetViewControl]="streetControl" #gm>
             <agm-marker *ngFor="let marker of markers; let i of index"
-                        [latitude]="marker.location.lat"
-                        [longitude]="marker.location.long"
+                        [latitude]="marker.location.latitude"
+                        [longitude]="marker.location.longitude"
                         [title]="marker.name"
                         (markerClick)="nodeSelected(marker.name, marker.sensors)"
                         (mouseOver)="displayInfoWindow(nodeInfo, gm)"
@@ -42,8 +42,8 @@
                        </span>
                    </ng-template>
                </agm-info-window>
-           <!--     <agm-snazzy-info-window [latitude]="marker.location.lat"
-                                        [longitude]="marker.location.long"
+           <!--     <agm-snazzy-info-window [latitude]="marker.location.latitude"
+                                        [longitude]="marker.location.longitude"
                                         [closeWhenOthersOpen]="true"
                                         #nodeInfo>
                     <span *ngIf="marker.sensors.length; else noSensors">
