@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Observable as Rx } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
+import { error } from 'util';
 
 @Component({
   selector: 'app-root',
@@ -34,21 +35,71 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        const editedNodes: Node[] = [];
-        this.nodeEndpointService.getAPIFarm()
-            .subscribe((farm: any) => {
-                this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
-                /*this.nodeEndpointService.popSensors(this.farm.nodes)
-                    .subscribe((node: Observable<any> ) => {
-                        node.subscribe(nodes => {
-                            nodes.subscribe(eachNode => {
-                                editedNodes.push(eachNode);
-                            })
-                            //this.markers = editedNodes; 
-                            console.log("markers", editedNodes);                           
+        let finalFarm = null;
+        this.nodeEndpointService.getFarm()
+            .subscribe(obsevable => {
+                obsevable.subscribe(observable => {
+                    observable.subscribe(observable => {
+                        observable.subscribe(currentFarm => {
+                            //console.log(currentFarm);
+                            finalFarm = currentFarm;
+                            this.farm = finalFarm;
+                            this.markers = this.markers;
+                        }, error => console.log(error))
+                    })
+                })
+            })
+        /*
+        //add nodes
+        this.nodeEndpointService.getNodes2()
+            .subscribe(nodes => {
+                //add sensor
+                this.nodeEndpointService.addSensorsToNodes(nodes)
+                    .subscribe(nodeObservable => {
+                        nodeObservable.subscribe(nodes => {
+                            //add datapoints
+                            this.nodeEndpointService.addSensorReadings(nodes)
+                                .subscribe(sensorObservable => {
+                                    sensorObservable.subscribe(newSensor => {
+                                        console.log("new Sensor: ", newSensor);
+                                    })
+                                });
                         })
-                    });*/
-            });
+                    })
+            })*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //working
+        /*this.nodeEndpointService.getNodes()
+            .subscribe(nodes => {
+                nodes.subscribe(node => {
+                    //get sensors for a node
+                    this.nodeEndpointService.getSensors(node.uri.split('/')[2])
+                        .subscribe((sensors:any[]) => {
+                            console.log(sensors, "for node: ", node.name);
+                            //get data points for a sensor
+                            this.nodeEndpointService.getDataPerSensor(sensors)
+                                .subscribe(sensorObservable => {
+                                    sensorObservable.subscribe(editedSensor => {
+                                        console.log("values: ", editedSensor);
+                                    });
+                                });
+                        });
+                });
+            });*/
     }
     nodeSelected(name, sensors) {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
