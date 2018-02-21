@@ -38,7 +38,12 @@ export class NodesEndpointService {
                   .pipe(map((readings:any) => {
 
                     farm.nodes[nodeIndex].sensors[sensorIndex].readings = readings;
-                    farm.nodes[nodeIndex].sensors[sensorIndex].lastReading = Object.values(readings[readings.length - 1])[0];
+                    Object.keys(readings[readings.length - 1])
+                      .forEach(key => {
+                        if(key == "Humidity" || key == "InternalTemperature" || key == "Temperature" ||  key == "Bat")
+                          farm.nodes[nodeIndex].sensors[sensorIndex].lastReading = readings[readings.length - 1][key];
+                      })
+                  //  / farm.nodes[nodeIndex].sensors[sensorIndex].lastReading = Object.keys(readings[readings.length - 1]);
                     return farm;
                   }))
               })
