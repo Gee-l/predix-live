@@ -28,14 +28,14 @@ export class NodesEndpointService {
         return Rx.from(_farm.nodes)
           .map((node:any, nodeIndex) => {
 
-            farm.nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, new Array<Sensor>()));
+            farm.nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, new Array<Sensor>(), node.status));
             return Rx.from(node.sensors)
               .map((sensor: any, sensorIndex) => {
 
                 farm.nodes[nodeIndex].sensors.push(new Sensor(sensor.uri, sensor.tag, sensor.category, sensor.dataFrequency, new Array(), sensor.treshold));
                 return this.getDataPoints(node.name, sensor.tag)
                   .pipe(map((readings:any) => {
-                    
+
                     farm.nodes[nodeIndex].sensors[sensorIndex].readings = readings;
                     return farm;
                   }))
