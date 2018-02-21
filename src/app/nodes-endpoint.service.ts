@@ -15,22 +15,28 @@ export class NodesEndpointService {
   bcxFarm: Farm;
   constructor(private http: HttpClient) { }
 
-  getDataPoints(tag) {
-    return this.http.get(`http://localhost:3000/datapoints/${tag}`)
+  getDataPoints(nodeName, tag) {
+    return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?limit=10&node=${nodeName}&sensor=${tag}`);
   }
 
   getFarm() {
+    let farm: Farm = null;
     return this.http.get("https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/63f2a245-4f66-42ba-bf6f-decc73f09abd")
-      .pipe(map((farm: any) => {
-        return Rx.from(farm.nodes)
+      .pipe(map((_farm: any) => {
+
+        farm = new Farm(_farm.uri, _farm.name, _farm.description, _farm.location, new Array<Node>());
+        return Rx.from(_farm.nodes)
           .map((node:any, nodeIndex) => {
-            farm.nodes[nodeIndex] = node;
+
+            farm.nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, new Array<Sensor>()));
             return Rx.from(node.sensors)
               .map((sensor: any, sensorIndex) => {
-                node.sensors[sensorIndex] = sensor;
-                return this.getDataPoints(sensor.tag)
+
+                farm.nodes[nodeIndex].sensors.push(new Sensor(sensor.uri, sensor.tag, sensor.category, sensor.dataFrequency, new Array(), sensor.treshold));
+                return this.getDataPoints(node.name, sensor.tag)
                   .pipe(map((readings:any) => {
-                    sensor.readings = readings;
+                    
+                    farm.nodes[nodeIndex].sensors[sensorIndex].readings = readings;
                     return farm;
                   }))
               })

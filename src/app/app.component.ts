@@ -42,10 +42,10 @@ export class AppComponent implements OnInit {
                 obsevable.subscribe(observable => {
                     observable.subscribe(observable => {
                         observable.subscribe(currentFarm => {
-                            //console.log(currentFarm);
                             finalFarm = currentFarm;
                             this.farm = finalFarm;
                             this.markers = finalFarm.nodes;
+                            console.log("FINAL: ", this.farm);
                         }, error => console.log(error))
                     })
                 })
