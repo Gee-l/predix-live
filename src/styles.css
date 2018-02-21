@@ -1,13 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
-    opacity: 0.6;
+    opacity: 0.9;
 }
 .cdk-overlay-dark-backdrop {
     background-color: rgba(0, 0, 0, 1);
 }
 .mat-dialog-container {
-    background-color: rgba(178, 34, 34, 0.8);
+    background-color: rgba(178, 34, 34, 0.7);
     color: gainsboro;
 }
 .mat-card {
@@ -16,21 +16,23 @@
     background-color: black;
 }
 .mat-fab.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary {
-    background-color: black;
+    background-color: #6B4049;
 }
 .mat-toolbar-row, .mat-toolbar-single-row {
     background-color: firebrick;
     color: gainsboro;
 }
 .mat-grid-tile .mat-figure {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.8);
 }
 .mat-card.mat-card {
     width: 100%;
     height: 100%;
     padding-top: 68px;
     position: relative;
-    bottom: 0px;
+    background-color: #1B1E27;
+    color: #A0AABE;
+    border-radius: 0 20px 0 20px;
 }
 .sensor_name {
     font-size: 2em;
@@ -47,4 +49,8 @@
 }
 .nodeAnimate{
     animation: onlineNode 3s ease-in-out infinite alternate;
+}
+.si-content-wrapper {
+    background-color: #1B1E27;
+    color: #A0AABE;
 }

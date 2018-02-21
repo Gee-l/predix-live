@@ -5,9 +5,7 @@ import { NodesEndpointService } from './nodes-endpoint.service';
 import { Farm } from './models/farm';
 import { Node } from './models/node';
 import { Router } from '@angular/router';
-import { Observable as Rx } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { AppOptions} from './app-options';
 
 @Component({
   selector: 'app-root',
@@ -22,9 +20,10 @@ export class AppComponent implements OnInit {
     public maxZoom: number;
     public zoom: number;
     public streetControl: boolean;
-    public farm: Farm;
+    public farm: any;
+    public dummyData;
 
-    constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private router: Router ) {
+    constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private router: Router) {
         this.typeId = 'satellite';
         this.minZoom = 15;
         this.maxZoom = 17;
@@ -34,7 +33,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        const editedNodes: Node[] = [];
+     /*   const editedNodes: Node[] = [];
         this.nodeEndpointService.getAPIFarm()
             .subscribe((farm: any) => {
                 this.farm = new Farm(farm.uri, farm.name, farm.description, farm.location, farm.nodes);
@@ -48,7 +47,11 @@ export class AppComponent implements OnInit {
                             console.log("markers", editedNodes);
                         });
                     });
-            });
+            });*/
+     this.dummyData = 0;
+     this.farm = new AppOptions().farmData();
+     this.markers = this.farm.nodes;
+     console.log(this.farm);
     }
     nodeSelected(name, sensors) {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
@@ -63,6 +66,7 @@ export class AppComponent implements OnInit {
         });
     }
     displayInfoWindow(nodeInfo, gm) {
+        console.log('Displaying Window');
         if (gm.lastOpen != null) {
             gm.lastOpen.close();
         }
@@ -74,6 +78,6 @@ export class AppComponent implements OnInit {
             if (gm.lastOpen != null) {
                 gm.lastOpen.close();
             }
-        }, 1000);
+        }, 4000);
     }
 }
