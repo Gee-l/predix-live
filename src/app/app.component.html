@@ -21,8 +21,10 @@
                         [longitude]="marker.location.long"
                         [title]="marker.name"
                         (markerClick)="nodeSelected(marker.name, marker.sensors)"
-                        >
-              <!-- <agm-info-window #nodeInfo [disableAutoPan]="false" style="text-align: center;">
+                        (mouseOver)="displayInfoWindow(nodeInfo, gm)"
+                        (mouseOut)="closeInfoWindow(nodeInfo, gm)"
+                        #myNode>
+              <agm-info-window #nodeInfo [disableAutoPan]="false" style="text-align: center;">
                    <h4 style="text-align: center">Node: {{marker.name}}</h4>
                    <span *ngIf="marker.sensors.length; else noSensors">
                        <p>{{marker.sensors.length}} Sensors running On this Node</p>
@@ -39,12 +41,11 @@
                            <strong style="color: forestgreen;"><mat-icon>router</mat-icon>Node is Online</strong>
                        </span>
                    </ng-template>
-               </agm-info-window>-->
-                <agm-snazzy-info-window [latitude]="marker.location.lat"
+               </agm-info-window>
+           <!--     <agm-snazzy-info-window [latitude]="marker.location.lat"
                                         [longitude]="marker.location.long"
                                         [closeWhenOthersOpen]="true"
-                                        #nodeInfo
-                                        (isOpenChange)="displayInfoWindow(nodeInfo, gm)">
+                                        #nodeInfo>
                     <span *ngIf="marker.sensors.length; else noSensors">
                         <p>
                             <strong>Node: {{marker.name}}</strong>
@@ -66,7 +67,7 @@
                            <strong class="found"><mat-icon>router</mat-icon>Node is Online</strong>
                        </span>
                     </ng-template>
-                </agm-snazzy-info-window>
+                </agm-snazzy-info-window>-->
             </agm-marker>
     </agm-map>
 </div>

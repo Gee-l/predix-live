@@ -66,7 +66,6 @@ export class AppComponent implements OnInit {
         });
     }
     displayInfoWindow(nodeInfo, gm) {
-        console.log('Displaying Window');
         if (gm.lastOpen != null) {
             gm.lastOpen.close();
         }
