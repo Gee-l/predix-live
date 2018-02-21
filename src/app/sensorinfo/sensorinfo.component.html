@@ -1,15 +1,7 @@
 <mat-tab-group>
   <mat-tab label="Readings">
-    <h4>Sensor Readings Info</h4>
+    <h4>{{data.sensor.tag}} Info</h4>
     <canvas #sensorcn>{{sensorInfo}}</canvas>
-  </mat-tab>
-  <mat-tab label="States">
-    <h4>On/Off State</h4>
-    <canvas #statecn>{{stateInfo}}</canvas>
-  </mat-tab>
-  <mat-tab label="Power">
-    <h4>Battery Power</h4>
-    <canvas #batterycn>{{batteryInfo}}</canvas>
   </mat-tab>
 </mat-tab-group>
 <button mat-raised-button color="warn"><mat-icon>chevron_left</mat-icon>Sensors</button>

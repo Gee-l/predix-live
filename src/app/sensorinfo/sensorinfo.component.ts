@@ -10,24 +10,17 @@ import { MAT_DIALOG_DATA } from '@angular/material';
   styleUrls: ['./sensorinfo.component.css']
 })
 export class SensorinfoComponent implements OnInit {
-  @ViewChild('batterycn') batterycn: ElementRef;
-  @ViewChild('statecn') statecn: ElementRef;
   @ViewChild('sensorcn') sensorcn: ElementRef;
-  public batteryInfo: any;
-  public stateInfo: any;
   public sensorInfo: any;
-  private batteryOptions: Object;
-  private stateOptions: Object;
   private sensorOptions: Object;
   private node;
+  private dataPoints = [];
+  private labelsPoints = [];
 
   constructor(private route: ActivatedRoute, @Inject(MAT_DIALOG_DATA) public data) {
-    this.batteryOptions = this.setOptions('line', [1, 2, 3, 4, 5, 6, 7, 8], 'Battery Info',
-      [12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1], '#000', '#fff', 2, true);
-    this.stateOptions = this.setOptions('line', [, 2, 3, 4, 5, 6, 7, 8], 'Sensor State',
-      [0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1], 'green ', '#fff', 2, true);
-    this.sensorOptions = this.setOptions('line', [, 2, 3, 4, 5, 6, 7, 8], 'Sensor Data',
-      [76, 34, 30, 12, 80, 100, 140, 3, 60, 45, 30], 'green', '#fff', 2, true);
+    this._getMapData(data.sensor);
+    this.sensorOptions = this.setOptions('line', this.labelsPoints, 'Sensor Data',
+      this.dataPoints, 'green', '#fff', 2, true);
   }
 
   private setOptions(type, labels, label, data, bgcolor, bcolor, width, atZero) {
@@ -44,25 +37,30 @@ export class SensorinfoComponent implements OnInit {
     return (opts);
   }
   ngOnInit() {
-    this.batteryGraph();
-    this.stateGraph();
     this.dataGraph();
     console.log(this.data);
+    this._getMapData(this.data.sensor);
     this.node = this.route.params.subscribe(params => {console.log('Testing' + JSON.stringify(params.node));});
-  }
-  batteryGraph() {
-    const batteryOpt = new AppOptions().chart_options(this.batteryOptions);
-    this.batteryInfo = new Chart(this.batterycn.nativeElement, batteryOpt);
-  }
-  stateGraph() {
-    const stateOpt = new AppOptions().chart_options(this.stateOptions);
-    stateOpt['data']['datasets'][0]['steppedLine'] = true;
-    console.log(stateOpt);
-    this.stateInfo = new Chart(this.statecn.nativeElement, stateOpt);
   }
   dataGraph() {
     console.log('Loading Data Graph');
     const sensorOpt = new AppOptions().chart_options(this.sensorOptions);
+    console.log(this.sensorcn);
     this.sensorInfo = new Chart(this.sensorcn.nativeElement, sensorOpt);
+  }
+  private _getMapData(sensor) {
+      this.dataPoints = [];
+      this.labelsPoints = [];
+    sensor.readings.forEach((value, key) => {
+      console.log('Key: ' + key);
+        for (let key2 in value) {
+          console.log('Runnning');
+          if (key2 !== 'x' && value.hasOwnProperty(key2)) {
+            this.dataPoints.push(value[key2]);
+          } else if (value.hasOwnProperty(key2)) {
+            this.labelsPoints.push(new Date(value[key2]).toLocaleTimeString());
+          }
+        }
+    });
   }
 }

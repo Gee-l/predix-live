@@ -17,16 +17,11 @@ export class SensorsPopupComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.data.sensors);
-    this.dummyData = 0;
-      setInterval((data) => {
-          this.dummyData += 4;
-          if (this.dummyData > 100)
-            this.dummyData = 12;
-      }, 2000);
     this.cnms = this.data.sensors.length <= 3 ? 3 : 4;
   }
-  sensorDetails(){
+  sensorDetails(sensorData) {
     this.showThis = false;
+    this.data.sensor = sensorData;
   }
   closeSensorInfo() {
     this.dialogRef.close();

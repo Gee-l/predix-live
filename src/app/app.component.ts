@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
     }
     nodeSelected(name, sensors) {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
-            width: '80%',
+            width: '40%',
             data: { fname: this.farm.name, name: name, sensors: sensors}
         });
         console.log(this.farm.nodes[0]);
