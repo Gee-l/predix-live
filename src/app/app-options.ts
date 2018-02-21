@@ -118,7 +118,8 @@ export class AppOptions {
                         'dataType': '/datatype/soilMoisture',
                         'dataFrequency': '180',
                         'node': '/node/2',
-                        'uom': '%'
+                        'uom': '%',
+                        "readings": [{"Humidity": 50, "x": 1518775642395}, {"Humidity": 50, "x": 1518775642395}]
                     }]
             },
             {

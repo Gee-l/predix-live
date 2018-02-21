@@ -1,15 +1,17 @@
 export class Sensor {
     uri: string
-    assetId: string
+    tag: string
     category: string
-    dataType: string
     dataFrequency: number
+    treshold: any
+    readings: any[]
 
-    constructor(uri: string, assetId: string, category: string, dataType: string, dataFrequency: number) {
+    constructor(uri: string, tag: string, category: string, dataFrequency: number, readings: any[], treshold: any) {
         this.uri = uri;
-        this.assetId = assetId;
+        this.tag = tag;
         this.category = category;
-        this.dataType = dataType;
         this.dataFrequency = dataFrequency;
+        this.readings = readings;
+        this.treshold = treshold;
     }
 }

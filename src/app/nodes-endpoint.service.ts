@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Http } from '@angular/http';
 import { Farm } from './models/farm'
 import { Node } from './models/node'
 import { Sensor } from './models/sensor'
@@ -16,7 +15,107 @@ export class NodesEndpointService {
   bcxFarm: Farm;
   constructor(private http: HttpClient) { }
 
-  getFarm(): Farm {
+  getDataPoints(nodeName, tag) {
+    return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?limit=10&node=${nodeName}&sensor=${tag}`);
+  }
+
+  getFarm() {
+    let farm: Farm = null;
+    return this.http.get("https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/63f2a245-4f66-42ba-bf6f-decc73f09abd")
+      .pipe(map((_farm: any) => {
+
+        farm = new Farm(_farm.uri, _farm.name, _farm.description, _farm.location, new Array<Node>());
+        return Rx.from(_farm.nodes)
+          .map((node:any, nodeIndex) => {
+
+            farm.nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, new Array<Sensor>()));
+            return Rx.from(node.sensors)
+              .map((sensor: any, sensorIndex) => {
+
+                farm.nodes[nodeIndex].sensors.push(new Sensor(sensor.uri, sensor.tag, sensor.category, sensor.dataFrequency, new Array(), sensor.treshold));
+                return this.getDataPoints(node.name, sensor.tag)
+                  .pipe(map((readings:any) => {
+                    
+                    farm.nodes[nodeIndex].sensors[sensorIndex].readings = readings;
+                    return farm;
+                  }))
+              })
+          });
+      }))
+  }
+  /*
+  getNodes() {
+    return this.http.get('http://localhost:3000/nodes/63f2a245-4f66-42ba-bf6f-decc73f09abd')
+      .pipe(map((nodes:any) => {
+        return Rx.from(nodes)
+          .switchMap((node: any) => {
+            return Rx.of(node);
+          })
+      }));
+  }
+
+  getNodes2() {
+    return this.http.get('http://localhost:3000/nodes/63f2a245-4f66-42ba-bf6f-decc73f09abd')
+  }
+
+  getNodeSensors(nodes) {
+
+  }
+
+  getSensors(nodeUri) {
+    return this.http.get(`http://localhost:3000/sensors/${nodeUri}`);
+  }
+
+  addSensorsToNodes(nodes) {
+    return Rx.from(nodes)
+      .map((node:any) => {
+        return this.getSensors(node.uri.split('/')[2])
+          .pipe(map((sensors:any) => {
+            node.sensors = sensors;
+            return node;
+          }))
+      });
+  }
+
+  getDataPerSensor(sensors) {
+    return Rx.from(sensors)
+      .map((sensor: any) => {
+        return this.getDataPoints(sensor.tag)
+          .pipe(map((dataPoint:any) => {
+            sensor.reading = dataPoint;
+            return sensor;
+          }))
+      })
+  }
+
+  getDataPerSensor2(sensors) {
+    return Rx.from(sensors)
+      .map((sensor: any) => {
+        return this.getDataPoints(sensor.tag)
+          .pipe(map((dataPoint:any) => {
+            sensor.reading = dataPoint;
+            return sensor;
+          }))
+      })
+  }
+
+  addSensorReadings(node) {
+    return Rx.from(node.sensors)
+      .map((sensor: any, index) => {
+        return this.getDataPoints(sensor.tag)
+          .pipe(map((data: any) => {
+            sensor.readings = data;
+            node.sensors[index] = sensor;
+            return node;
+          }));
+      })
+  }
+
+  getDataPoints(tag) {
+    return this.http.get(`http://localhost:3000/datapoints/${tag}`)
+  }*/
+
+  /*getFarm(): Farm {
     let farm: Farm = new Farm("/farm/1", "Farm 1", "this is the farm description", {lat: -33.5049805, lng: 19.5635469 }, this.getNodes("/farm/1"));
     return farm;
   }
@@ -279,37 +378,17 @@ export class NodesEndpointService {
   }
 
   getAPIFarm(){
-    let _farm:Farm = null;
     return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/63f2a245-4f66-42ba-bf6f-decc73f09abd`);
   }
 
-  popSensors(nodes): Observable<any> {
-    /*return Rx.from(nodes)
-      .flatMap((node:any) => {
-        return Rx.of(node.sensors)
-          .flatMap((sensor:any) => {
-            console.log("sensor: ", sensor, "node : ", node)
-            return this.popSensor(node.name, sensor.tag)
-              .pipe(map((res => {
-                node.values = res;
-                return Rx.of(node);
-              })))
-          })
-      })*/
+  popNodes(nodes) {
     return Rx.from(nodes)
-      .map((node:any) => {
-        return Rx.from(node.sensors)
-          .flatMap((sensor:any) => {
-            return this.popSensor(node.name, sensor.tag)
-              .pipe(map((res => {
-                node.values = res;
-                  return Rx.of(node);
-              })))
-          })
-      });
+      .flatMap((node:any) => {
+        return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/${node.name}`);
+      })
   }
 
   popSensor(nodeName, tag): Observable<any> {
     return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?node=${nodeName}&order=asc&sensor=${tag}&limit=4`);
-  }
+  }*/
 }
