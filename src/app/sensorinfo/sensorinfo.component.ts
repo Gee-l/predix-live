@@ -1,7 +1,8 @@
-import {Component, ElementRef, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, Inject, ViewChild} from '@angular/core';
 import { Chart } from 'chart.js/dist/Chart.js';
 import { AppOptions} from '../app-options';
 import { ActivatedRoute } from '@angular/router';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-sensorinfo',
@@ -20,7 +21,7 @@ export class SensorinfoComponent implements OnInit {
   private sensorOptions: Object;
   private node;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, @Inject(MAT_DIALOG_DATA) public data) {
     this.batteryOptions = this.setOptions('line', [1, 2, 3, 4, 5, 6, 7, 8], 'Battery Info',
       [12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1], '#000', '#fff', 2, true);
     this.stateOptions = this.setOptions('line', [, 2, 3, 4, 5, 6, 7, 8], 'Sensor State',
@@ -46,7 +47,8 @@ export class SensorinfoComponent implements OnInit {
     this.batteryGraph();
     this.stateGraph();
     this.dataGraph();
-    this.node = this.route.params.subscribe(params => {console.log(params);});
+    console.log(this.data);
+    this.node = this.route.params.subscribe(params => {console.log('Testing' + JSON.stringify(params.node));});
   }
   batteryGraph() {
     const batteryOpt = new AppOptions().chart_options(this.batteryOptions);

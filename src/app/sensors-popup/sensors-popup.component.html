@@ -1,18 +1,17 @@
 <div *ngIf="showThis">
-  <p [align]="'center'"> {{data.fname}}</p>
-  <p matDialogTitle><mat-icon>device_hub</mat-icon> {{data.name}} </p>
+  <p matDialogTitle><mat-icon>device_hub</mat-icon> {{data.name}} - {{data.fname}} </p>
   <mat-dialog-content>
     <mat-grid-list [cols]="cnms">
       <span *ngIf="data.sensors.length; else noSensors">
         <mat-grid-tile *ngFor="let sensor of data.sensors">
         <mat-card>
-          <h6 style="text-align: center"><mat-card-title class="sensor_name"><mat-icon class="nodeAnimate">router</mat-icon><br> {{sensor.tag}}</mat-card-title></h6>
+          <h6 style="text-align: center"><mat-card-title class="sensor_name"><mat-icon class="nodeAnimate" style="font-size: 1.2em">router</mat-icon><br> {{sensor.assetId}}</mat-card-title></h6>
           <mat-card-content>
-            <h5 style="text-align: center">Type of sensor<br> {{sensor.category | uppercase}}</h5>
-            <p>Last Reading: <strong>24.5</strong></p>
+            <h5 style="text-align: center"><br> {{sensor.category | uppercase}} SENSOR</h5>
+            <h1 style="color: #A32121;text-align: center"><strong>{{dummyData}} {{sensor.uom}}</strong></h1>
           </mat-card-content>
           <mat-card-footer style="align-content: center">
-            <button mat-raised-button color="primary" routerLink="details/{{sensor}}" (click)="sensorDetails()">Details</button>
+            <button mat-raised-button color="primary" routerLink="details/{{sensor}}/{{data.name}}" (click)="sensorDetails()">Details</button>
           </mat-card-footer>
         </mat-card>
       </mat-grid-tile>

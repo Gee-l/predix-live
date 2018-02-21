@@ -9,21 +9,20 @@
 </mat-toolbar>
 <div *ngIf="farm != undefined">
     <agm-map
-            [latitude]="farm.location.latitude"
-            [longitude]="farm.location.longitude"
+            [latitude]="farm.location.lat"
+            [longitude]="farm.location.long"
             [mapTypeId]="typeId"
             [maxZoom]="maxZoom"
             [minZoom]="minZoom"
             [zoom]="zoom"
             [streetViewControl]="streetControl" #gm>
             <agm-marker *ngFor="let marker of markers; let i of index"
-                        [latitude]="marker.location.latitude"
-                        [longitude]="marker.location.longitude"
+                        [latitude]="marker.location.lat"
+                        [longitude]="marker.location.long"
                         [title]="marker.name"
-                        (markerClick)="nodeSelected(marker.name, marker.sensors, gm)"
-                        (mouseOver)="displayInfoWindow(nodeInfo, gm)"
-                        (mouseOut)="closeInfoWindow(nodeInfo, gm)">
-               <agm-info-window #nodeInfo [disableAutoPan]="false" style="text-align: center;">
+                        (markerClick)="nodeSelected(marker.name, marker.sensors)"
+                        >
+              <!-- <agm-info-window #nodeInfo [disableAutoPan]="false" style="text-align: center;">
                    <h4 style="text-align: center">Node: {{marker.name}}</h4>
                    <span *ngIf="marker.sensors.length; else noSensors">
                        <p>{{marker.sensors.length}} Sensors running On this Node</p>
@@ -40,7 +39,34 @@
                            <strong style="color: forestgreen;"><mat-icon>router</mat-icon>Node is Online</strong>
                        </span>
                    </ng-template>
-               </agm-info-window>
+               </agm-info-window>-->
+                <agm-snazzy-info-window [latitude]="marker.location.lat"
+                                        [longitude]="marker.location.long"
+                                        [closeWhenOthersOpen]="true"
+                                        #nodeInfo
+                                        (isOpenChange)="displayInfoWindow(nodeInfo, gm)">
+                    <span *ngIf="marker.sensors.length; else noSensors">
+                        <p>
+                            <strong>Node: {{marker.name}}</strong>
+                            <br>{{marker.sensors.length}} Sensors
+                            <br>Running On this Node
+                        </p>
+                       <span *ngIf="marker.status == 'ON'; else nodeOffline">
+                           <strong class="found">
+                               <mat-icon>router</mat-icon>
+                               Node is Online</strong>
+                       </span>
+                       <ng-template #nodeOffline>
+                           <strong class="notFound">Node is Offline</strong>
+                       </ng-template>
+                   </span>
+                    <ng-template #noSensors>
+                        <p class="notFound"><strong>Node: {{marker.name}}</strong><br>No sensors on this Node</p>
+                        <span *ngIf="marker.status == 'ON'; else nodeOffline">
+                           <strong class="found"><mat-icon>router</mat-icon>Node is Online</strong>
+                       </span>
+                    </ng-template>
+                </agm-snazzy-info-window>
             </agm-marker>
     </agm-map>
 </div>

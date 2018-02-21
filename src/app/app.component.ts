@@ -23,9 +23,10 @@ export class AppComponent implements OnInit {
     public maxZoom: number;
     public zoom: number;
     public streetControl: boolean;
-    public farm: Farm;
+    public farm: any;
+    public dummyData;
 
-    constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private router: Router ) {
+    constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private router: Router) {
         this.typeId = 'satellite';
         this.minZoom = 15;
         this.maxZoom = 17;
@@ -44,7 +45,7 @@ export class AppComponent implements OnInit {
                             //console.log(currentFarm);
                             finalFarm = currentFarm;
                             this.farm = finalFarm;
-                            this.markers = this.markers;
+                            this.markers = finalFarm.nodes;
                         }, error => console.log(error))
                     })
                 })
@@ -114,6 +115,7 @@ export class AppComponent implements OnInit {
         });
     }
     displayInfoWindow(nodeInfo, gm) {
+        console.log('Displaying Window');
         if (gm.lastOpen != null) {
             gm.lastOpen.close();
         }
@@ -125,6 +127,6 @@ export class AppComponent implements OnInit {
             if (gm.lastOpen != null) {
                 gm.lastOpen.close();
             }
-        }, 1000);
+        }, 4000);
     }
 }

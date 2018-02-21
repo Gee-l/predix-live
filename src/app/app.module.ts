@@ -15,7 +15,6 @@ import { SensorinfoComponent } from './sensorinfo/sensorinfo.component';
 import { RouterModule } from '@angular/router';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +40,7 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
     }),
       RouterModule.forRoot([
           {
-              path: 'details/:node',
+              path: 'details/:node/:nodeName',
               component: SensorinfoComponent
           }
       ]),
