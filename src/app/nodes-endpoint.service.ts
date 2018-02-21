@@ -32,11 +32,13 @@ export class NodesEndpointService {
             return Rx.from(node.sensors)
               .map((sensor: any, sensorIndex) => {
 
-                farm.nodes[nodeIndex].sensors.push(new Sensor(sensor.uri, sensor.tag, sensor.category, sensor.dataFrequency, new Array(), sensor.treshold));
+                farm.nodes[nodeIndex].sensors.push(
+                  new Sensor(sensor.uri, sensor.tag, sensor.category, sensor.dataFrequency, new Array(), sensor.treshold, null));
                 return this.getDataPoints(node.name, sensor.tag)
                   .pipe(map((readings:any) => {
 
                     farm.nodes[nodeIndex].sensors[sensorIndex].readings = readings;
+                    farm.nodes[nodeIndex].sensors[sensorIndex].lastReading = Object.values(readings[readings.length - 1])[0];
                     return farm;
                   }))
               })
