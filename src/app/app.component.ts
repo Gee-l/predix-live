@@ -45,62 +45,12 @@ export class AppComponent implements OnInit {
                             finalFarm = currentFarm;
                             this.farm = finalFarm;
                             this.markers = finalFarm.nodes;
-                            console.log("FINAL: ", this.farm);
+                            //console.log("FINAL: ", this.farm);
                         }, error => console.log(error))
                     })
                 })
             })
-        /*
-        //add nodes
-        this.nodeEndpointService.getNodes2()
-            .subscribe(nodes => {
-                //add sensor
-                this.nodeEndpointService.addSensorsToNodes(nodes)
-                    .subscribe(nodeObservable => {
-                        nodeObservable.subscribe(nodes => {
-                            //add datapoints
-                            this.nodeEndpointService.addSensorReadings(nodes)
-                                .subscribe(sensorObservable => {
-                                    sensorObservable.subscribe(newSensor => {
-                                        console.log("new Sensor: ", newSensor);
-                                    })
-                                });
-                        })
-                    })
-            })*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //working
-        /*this.nodeEndpointService.getNodes()
-            .subscribe(nodes => {
-                nodes.subscribe(node => {
-                    //get sensors for a node
-                    this.nodeEndpointService.getSensors(node.uri.split('/')[2])
-                        .subscribe((sensors:any[]) => {
-                            console.log(sensors, "for node: ", node.name);
-                            //get data points for a sensor
-                            this.nodeEndpointService.getDataPerSensor(sensors)
-                                .subscribe(sensorObservable => {
-                                    sensorObservable.subscribe(editedSensor => {
-                                        console.log("values: ", editedSensor);
-                                    });
-                                });
-                        });
-                });
-            });*/
     }
     nodeSelected(name, sensors) {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
