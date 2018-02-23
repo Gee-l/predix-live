@@ -1,0 +1,12 @@
+::ng-deep .mat-dialog-container {
+    background-color: transparent;
+    color: gainsboro;
+    box-shadow: none;
+}
+.mat-icon-button {
+    background-color: #ffffff;
+    color: #a50610;
+}
+#mySensorInfo {
+    background-color: white;
+}

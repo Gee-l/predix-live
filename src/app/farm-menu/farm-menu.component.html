@@ -1,0 +1,18 @@
+<mat-list [id]="'farms_selector'">
+  <mat-list-item>
+    <button mat-icon-button mat-ripple [matMenuTriggerFor]="farmsMenu"><mat-icon>games</mat-icon></button>
+  </mat-list-item>
+  <mat-list-item>
+    <button mat-icon-button mat-ripple [matMenuTriggerFor]="nodesMenu"><mat-icon>apps</mat-icon></button>
+  </mat-list-item>
+</mat-list>
+  <mat-menu #farmsMenu="matMenu" [overlapTrigger]="false">
+    <div *ngIf="farms != undefined">
+      <button mat-menu-item *ngFor="let farm of farms" (click)="updateNodes(farm.nodes)">{{farm.name}}</button>
+    </div>
+  </mat-menu>
+  <mat-menu #nodesMenu="matMenu" [overlapTrigger]="false">
+    <div *ngIf="nodes != undefined">
+      <button mat-menu-item *ngFor="let node of nodes" (click)="nodeSelected(node.name, node.sensors)">{{node.name}}</button><br>
+    </div>
+  </mat-menu>

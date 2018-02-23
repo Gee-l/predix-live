@@ -1,29 +1,12 @@
-<mat-toolbar color="primary">
-    <span>BCX</span>
-        <mat-menu #appMenu="matMenu">
-        <ng-template matMenuContent>
-            <button mat-menu-item>Settings</button>
-            <button mat-menu-item>Log off</button>
-        </ng-template>
-    </mat-menu>
-</mat-toolbar>
 <div *ngIf="farm != undefined">
-    <agm-map
-            [latitude]="farm.location.latitude"
-            [longitude]="farm.location.longitude"
-            [mapTypeId]="typeId"
-            [maxZoom]="maxZoom"
-            [minZoom]="minZoom"
-            [zoom]="zoom"
-            [streetViewControl]="streetControl" #gm>
-            <agm-marker *ngFor="let marker of markers; let i of index"
-                        [latitude]="marker.location.latitude"
-                        [longitude]="marker.location.longitude"
-                        [title]="marker.name"
+    <agm-map [latitude]="farm.location.latitude" [longitude]="farm.location.longitude" [mapTypeId]="typeId"
+            [maxZoom]="maxZoom" [minZoom]="minZoom" [zoom]="zoom" [streetViewControl]="streetControl" #gm>
+        <agm-marker *ngFor="let marker of markers; let i of index" [latitude]="marker.location.latitude"
+                        [longitude]="marker.location.longitude" [title]="marker.name"
                         (markerClick)="nodeSelected(marker.name, marker.sensors)"
                         (mouseOver)="displayInfoWindow(nodeInfo, gm)"
-                        (mouseOut)="closeInfoWindow(nodeInfo, gm)"
-                        #myNode>
+                        (mouseOut)="closeInfoWindow(nodeInfo, gm)" #myNode>
+
               <agm-info-window #nodeInfo [disableAutoPan]="false" style="text-align: center;">
                    <h4 style="text-align: center">Node: {{marker.name}}</h4>
                    <span *ngIf="marker.sensors.length; else noSensors">
@@ -42,36 +25,9 @@
                        </span>
                    </ng-template>
                </agm-info-window>
-           <!--     <agm-snazzy-info-window [latitude]="marker.location.latitude"
-                                        [longitude]="marker.location.longitude"
-                                        [closeWhenOthersOpen]="true"
-                                        #nodeInfo>
-                    <span *ngIf="marker.sensors.length; else noSensors">
-                        <p>
-                            <strong>Node: {{marker.name}}</strong>
-                            <br>{{marker.sensors.length}} Sensors
-                            <br>Running On this Node
-                        </p>
-                       <span *ngIf="marker.status == 'ON'; else nodeOffline">
-                           <strong class="found">
-                               <mat-icon>router</mat-icon>
-                               Node is Online</strong>
-                       </span>
-                       <ng-template #nodeOffline>
-                           <strong class="notFound">Node is Offline</strong>
-                       </ng-template>
-                   </span>
-                    <ng-template #noSensors>
-                        <p class="notFound"><strong>Node: {{marker.name}}</strong><br>No sensors on this Node</p>
-                        <span *ngIf="marker.status == 'ON'; else nodeOffline">
-                           <strong class="found"><mat-icon>router</mat-icon>Node is Online</strong>
-                       </span>
-                    </ng-template>
-                </agm-snazzy-info-window>-->
             </agm-marker>
     </agm-map>
 </div>
-<mat-toolbar>
-    <small>&copy; All Rights Reserved, BCX 2018</small>
-</mat-toolbar>
-<visualiser></visualiser>
+<div [id]="'farms_trigger'" *ngIf="farms != undefined">
+   <app-farm-menu [farms]="farms" [nodes]="farms[0].nodes"></app-farm-menu>
+</div>

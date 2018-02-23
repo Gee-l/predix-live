@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sensors-popup',
@@ -8,24 +7,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./sensors-popup.component.css']
 })
 export class SensorsPopupComponent implements OnInit {
-  cnms = 0;
-  showThis = true;
-  public dummyData;
+  public toggleGraphGauge: boolean;
 
-  constructor(public dialogRef: MatDialogRef<SensorsPopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any
-  , private router: Router)  { }
-
-  ngOnInit() {
-    console.log(this.data.sensors);
-    this.cnms = this.data.sensors.length <= 3 ? 3 : 4;
-  }
+  constructor(public dialogRef: MatDialogRef<SensorsPopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any)  { }
+  ngOnInit() {}
   sensorDetails(sensorData) {
-    this.showThis = false;
+    this.toggleGraphGauge = false;
     this.data.sensor = sensorData;
   }
   closeSensorInfo() {
     this.dialogRef.close();
     console.log(this.data);
   }
-
+  public toggleInfo(state) {
+    this.toggleGraphGauge = state;
+  }
 }

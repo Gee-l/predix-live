@@ -1,0 +1,28 @@
+.mat-menu-item {
+    background-color: #A32121;
+    color: #A0AABE;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    opacity: 0.5;
+}
+.mat-menu-item:hover{
+    background-color: #1B1E27;
+    opacity: 0.9;
+}
+.mat-icon-button {
+    background-color: #ffffff;
+    color: #a50610;
+}
+::ng-deep .mat-menu-panel {
+    background-color: transparent;
+}
+::ng-deep .mat-menu-panel.mat-menu-after.mat-menu-below{
+    z-index: 1000;
+    position: relative;
+    left: 40%;
+    top: -45px;
+}
+
+
+

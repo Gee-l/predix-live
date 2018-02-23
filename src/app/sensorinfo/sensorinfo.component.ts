@@ -38,14 +38,12 @@ export class SensorinfoComponent implements OnInit {
   }
   ngOnInit() {
     this.dataGraph();
-    console.log(this.data);
-    this._getMapData(this.data.sensor);
     this.node = this.route.params.subscribe(params => {console.log('Testing' + JSON.stringify(params.node));});
   }
   dataGraph() {
     console.log('Loading Data Graph');
     const sensorOpt = new AppOptions().chart_options(this.sensorOptions);
-    console.log(this.sensorcn);
+    console.log(this.sensorcn.nativeElement);
     this.sensorInfo = new Chart(this.sensorcn.nativeElement, sensorOpt);
   }
   private _getMapData(sensor) {
@@ -53,7 +51,7 @@ export class SensorinfoComponent implements OnInit {
       this.labelsPoints = [];
     sensor.readings.forEach((value, key) => {
       console.log('Key: ' + key);
-        for (let key2 in value) {
+        for (const key2 in value) {
           console.log('Runnning');
           if (key2 !== 'x' && value.hasOwnProperty(key2)) {
             this.dataPoints.push(value[key2]);

@@ -1,7 +1,5 @@
-<mat-tab-group>
-  <mat-tab label="Readings">
-    <h4>{{data.sensor.tag}} Info</h4>
-    <canvas #sensorcn>{{sensorInfo}}</canvas>
-  </mat-tab>
-</mat-tab-group>
-<button mat-raised-button color="warn"><mat-icon>chevron_left</mat-icon>Sensors</button>
+<div id="canvas-cont">
+  <h4>{{data.sensor.tag}} Info</h4>
+  <canvas #sensorcn>{{sensorInfo}}</canvas>
+  <button mat-raised-button color="warn"><mat-icon>chevron_left</mat-icon>Sensors</button>
+</div>

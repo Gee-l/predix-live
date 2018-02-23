@@ -1,27 +1,9 @@
-<div *ngIf="showThis">
-  <p matDialogTitle><mat-icon>device_hub</mat-icon> {{data.name}} - {{data.fname}} </p>
-  <mat-dialog-content>
-    <mat-grid-list [cols]="cnms">
-      <span *ngIf="data.sensors.length; else noSensors">
-        <mat-grid-tile *ngFor="let sensor of data.sensors">
-        <mat-card>
-          <h6 style="text-align: center"><mat-card-title class="sensor_name"><mat-icon class="nodeAnimate" style="font-size: 1.2em">router</mat-icon><br> {{sensor.assetId}}</mat-card-title></h6>
-          <mat-card-content>
-            <h5 style="text-align: center"><br> {{sensor.category | uppercase}} SENSOR</h5>
-            <h1 style="color: #A32121;text-align: center"><strong>{{sensor.lastReading}} {{sensor.uom}}</strong></h1>
-          </mat-card-content>
-          <mat-card-footer style="align-content: center">
-            <button mat-raised-button color="primary" routerLink="details/{{sensor}}/{{data.name}}" (click)="sensorDetails(sensor)">Details</button>
-          </mat-card-footer>
-        </mat-card>
-      </mat-grid-tile>
-      </span>
-      <ng-template #noSensors>
-        <hr>
-        <h1 style="text-align: center; color: black">No Sensors Available</h1>
-      <hr>
-      </ng-template>
-    </mat-grid-list>
-  </mat-dialog-content>
+<div [id]="'mySensorInfo'">
+  <div *ngIf="!toggleGraphGauge; else graphInfo">
+    <app-farm-gauge [data]="data.values" [sensors]="data.sensors"></app-farm-gauge>
+  </div>
+  <ng-template #graphInfo>Graph Information</ng-template>
 </div>
-<router-outlet *ngIf="!showThis"></router-outlet>
+<br>
+<button mat-icon-button mat-ripple (click)="toggleInfo(false)"><mat-icon>wifi_tethering</mat-icon></button>
+<button mat-icon-button mat-ripple (click)="toggleInfo(true)"><mat-icon>show_chart</mat-icon></button>

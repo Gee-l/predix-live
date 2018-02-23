@@ -1,14 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { MatDialog } from '@angular/material';
 import {SensorsPopupComponent} from './sensors-popup/sensors-popup.component';
 import { NodesEndpointService } from './nodes-endpoint.service';
-import { Farm } from './models/farm';
-import { Node } from './models/node';
 import { Router } from '@angular/router';
-import { Observable as Rx } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
-import { error } from 'util';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +11,7 @@ import { error } from 'util';
 })
 
 export class AppComponent implements OnInit {
+    @ViewChild(MatDialog) mat: ElementRef;
     public markers;
     public typeId: string;
     public minZoom: number;
@@ -24,7 +19,10 @@ export class AppComponent implements OnInit {
     public zoom: number;
     public streetControl: boolean;
     public farm: any;
-    public dummyData;
+    public farms: Array<any>;
+    private gaugeInfo: Array<any>;
+    private unitsInfo: Array<any>;
+    private values: Array<any>;
 
     constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private router: Router) {
         this.typeId = 'satellite';
@@ -33,6 +31,9 @@ export class AppComponent implements OnInit {
         this.zoom = 17;
         this.streetControl  = false;
         this.farm = null;
+        this.gaugeInfo = [];
+        this.unitsInfo = [];
+        this.values = [];
     }
 
     ngOnInit() {
@@ -40,74 +41,28 @@ export class AppComponent implements OnInit {
         this.nodeEndpointService.getFarm()
             .subscribe(obsevable => {
                 obsevable.subscribe(observable => {
-                    observable.subscribe(observable => {
-                        observable.subscribe(currentFarm => {
+                    observable.subscribe(obsevable2 => {
+                        obsevable2.subscribe(currentFarm => {
                             finalFarm = currentFarm;
                             this.farm = finalFarm;
                             this.markers = finalFarm.nodes;
-                            console.log("FINAL: ", this.farm);
+                            this.farms = [];
+                            this.farms.push(this.farm);
+                            this.farms.push(this.farm);
+                            console.log('FINAL: ', this.farm);
                         }, error => console.log(error))
-                    })
-                })
-            })
-        /*
-        //add nodes
-        this.nodeEndpointService.getNodes2()
-            .subscribe(nodes => {
-                //add sensor
-                this.nodeEndpointService.addSensorsToNodes(nodes)
-                    .subscribe(nodeObservable => {
-                        nodeObservable.subscribe(nodes => {
-                            //add datapoints
-                            this.nodeEndpointService.addSensorReadings(nodes)
-                                .subscribe(sensorObservable => {
-                                    sensorObservable.subscribe(newSensor => {
-                                        console.log("new Sensor: ", newSensor);
-                                    })
-                                });
-                        })
-                    })
-            })*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //working
-        /*this.nodeEndpointService.getNodes()
-            .subscribe(nodes => {
-                nodes.subscribe(node => {
-                    //get sensors for a node
-                    this.nodeEndpointService.getSensors(node.uri.split('/')[2])
-                        .subscribe((sensors:any[]) => {
-                            console.log(sensors, "for node: ", node.name);
-                            //get data points for a sensor
-                            this.nodeEndpointService.getDataPerSensor(sensors)
-                                .subscribe(sensorObservable => {
-                                    sensorObservable.subscribe(editedSensor => {
-                                        console.log("values: ", editedSensor);
-                                    });
-                                });
-                        });
+                    });
                 });
-            });*/
+            });
     }
     nodeSelected(name, sensors) {
+        this.getGaugeInfo(sensors);
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
             width: '40%',
-            data: { fname: this.farm.name, name: name, sensors: sensors}
+            data: { fname: this.farm.name, name: name, sensors: sensors},
+            position: {top: '0%'}
         });
-        console.log(this.farm.nodes[0]);
+        console.log('My Id: ' + dialogRef.id);
         dialogRef.afterClosed().subscribe(result => {
             console.log(this.router.navigate(['/']));
             console.log('Dialog Closed');
@@ -122,10 +77,20 @@ export class AppComponent implements OnInit {
         nodeInfo.open();
     }
     closeInfoWindow(nodeInfo, gm) {
-        setTimeout((data) => {
+       /* setTimeout((data) => {
             if (gm.lastOpen != null) {
                 gm.lastOpen.close();
             }
-        }, 4000);
+        }, 10000);*/
+    }
+    private getGaugeInfo(sensors) {
+        sensors.forEach((value, key) => {
+            const readings = value.readings;
+            this.gaugeInfo.push({'name': value.tag, 'value': readings[readings.length - 1]['value'], 'active': true});
+            this.unitsInfo.push({'uom': value.uom});
+            this.values.push(readings[readings.length - 1]['value']);
+        });
+        console.log(this.gaugeInfo);
+        console.log(this.unitsInfo);
     }
 }
