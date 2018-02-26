@@ -38,23 +38,28 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         let finalFarm = null;
-        this.nodeEndpointService.getFarm()
-            .subscribe(obsevable => {
-                obsevable.subscribe(observable => {
-                    observable.subscribe(obsevable2 => {
-                        obsevable2.subscribe(currentFarm => {
-                            finalFarm = currentFarm;
-                            this.farm = finalFarm;
-                            this.markers = finalFarm.nodes;
-                            this.farms = [];
-                            this.farms.push(this.farm);
-                            this.farms.push(this.farm);
-                            console.log('FINAL: ', this.farm);
-                        }, error => console.log(error))
-                    });
-                });
-            });
+        this.nodeEndpointService.getFarms()
+            .subscribe(res => {
+                console.log(res);
+            })
+        // this.nodeEndpointService.getFarm()
+        //     .subscribe(obsevable => {
+        //         obsevable.subscribe(observable => {
+        //             observable.subscribe(obsevable2 => {
+        //                 obsevable2.subscribe(currentFarm => {
+        //                     finalFarm = currentFarm;
+        //                     this.farm = finalFarm;
+        //                     this.markers = finalFarm.nodes;
+        //                     this.farms = [];
+        //                     this.farms.push(this.farm);
+        //                     this.farms.push(this.farm);
+        //                     console.log('FINAL: ', this.farm);
+        //                 }, error => console.log(error))
+        //             });
+        //         });
+        //     });
     }
+
     nodeSelected(name, sensors) {
         this.getGaugeInfo(sensors);
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {

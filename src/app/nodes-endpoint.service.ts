@@ -19,9 +19,9 @@ export class NodesEndpointService {
     return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?limit=10&node=${nodeName}&sensor=${tag}`);
   }
 
-  getFarm() {
+  getFarm(farmUri) {
     let farm: Farm = null;
-    return this.http.get("https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/63f2a245-4f66-42ba-bf6f-decc73f09abd")
+    return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/${farmUri}`)
       .pipe(map((_farm: any) => {
 
         farm = new Farm(_farm.uri, _farm.name, _farm.description, _farm.location, new Array<Node>());
@@ -42,11 +42,18 @@ export class NodesEndpointService {
                       .forEach(key => {
                         if(key == "Humidity" || key == "InternalTemperature" || key == "Temperature" ||  key == "Bat" || key == "Motion" || key == "Light")
                           farm.nodes[nodeIndex].sensors[sensorIndex].lastReading = readings[readings.length - 1][key];
-                      })
+                      });
                     return farm;
-                  }))
-              })
+                  }));
+              });
           });
-      }))
+      }));
+  }
+
+  getFarms() {
+    return this.http.get("https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm")
+      .pipe(map((farms:any) => {
+        return Rx.of(farms);
+      }));
   }
 }
