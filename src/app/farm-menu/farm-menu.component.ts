@@ -13,11 +13,12 @@ export class FarmMenuComponent implements OnInit {
   private gaugeInfo: Array<any>;
   private unitsInfo: Array<any>;
   private values: Array<any>;
-  private timeSeries: Array<any>
+  private timeSeries: Array<any>;
   constructor(private sensorDialog: MatDialog) {
       this.gaugeInfo = [];
       this.unitsInfo = [];
       this.values = [];
+      this.timeSeries = [];
   }
   ngOnInit() {}
   public updateNodes(nodes) {
@@ -47,6 +48,7 @@ export class FarmMenuComponent implements OnInit {
               'value': value.lastReading, 'active': true});
           this.unitsInfo.push({'uom': value.uom});
           this.values.push(value.lastReading);
+          this.timeSeries.push(value.readings);
       });
       this.values = this._validate_value(this.values);
     }
