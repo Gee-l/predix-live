@@ -20,12 +20,12 @@ export class SensorinfoComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data) {
     console.log(this.data);
     this.dataPoints = [];
-    this.colors = ['#000', '#041', '#211', '#111', '#023'];
+    this.colors = ['rgba(255, 83, 13, 0.5)', 'rgba(232, 44, 12, 0.5)', 'rgba(255, 0, 0, 0.5)', 'rgba(232, 12, 122, 0.5)', 'rgba(255, 13, 255, 0.5)'];
     this.labelsPoints = [];
     this.labels = [];
     this._getMapData(this.data.sensors);
     this.sensorOptions = this.setOptions('line', this.labelsPoints, 'Sensor Data',
-      this.dataPoints, 'green', '#fff', 2, true);
+      this.dataPoints, 'green', '#fff', 3, true);
   }
 
   private setOptions(type, labels, label, data, bgcolor, bcolor, width, atZero) {
