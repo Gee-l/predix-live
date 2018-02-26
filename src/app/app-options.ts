@@ -9,14 +9,22 @@ export class AppOptions {
         datasets: []
       },
       options: {
-        layout: {
-          padding: {
-            left: 50,
-            right: 50,
-            top: 0,
-            bottom: 0
-          }
+          layout: {
+              padding: {
+                  left: 50,
+                  right: 50,
+                  top: 0,
+                  bottom: 0
+              }
+              },
+          legend: {
+              labels: {
+                fontColor: '#fff'
+            }
         },
+          tooltips: {
+              mode: 'point'
+          },
         scales: {
           yAxes: [{
             ticks: {

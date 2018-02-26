@@ -31,7 +31,7 @@ export class FarmMenuComponent implements OnInit {
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
             width: '50%',
             data: { fname: this.farms[0].name, name: name, sensors: this.gaugeInfo
-            , unitsInfo: this.unitsInfo, values: this.values},
+            , unitsInfo: this.unitsInfo, values: this.values, timeSeries: this.timeSeries},
             position: {top: '0%'}
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -42,8 +42,8 @@ export class FarmMenuComponent implements OnInit {
       this.gaugeInfo = [];
       this.values = [];
       this.unitsInfo = [];
+      this.timeSeries = [];
       sensors.forEach((value) => {
-          const readings = value.readings;
           this.gaugeInfo.push({'name': value.tag,
               'value': value.lastReading, 'active': true});
           this.unitsInfo.push({'uom': value.uom});
