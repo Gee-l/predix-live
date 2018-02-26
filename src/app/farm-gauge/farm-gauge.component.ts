@@ -33,16 +33,16 @@ export class FarmGaugeComponent implements OnInit {
   }
   ngOnInit() {}
   sensorsValueChange() {
-      let values = [];
+      const values = [];
       this.sensors.forEach(function (sensor) {
           if (sensor.active) {
-              values.push(sensor.value[sensor.value.length - 1]);
+              values.push(sensor.value);
           }
       });
-      values = this._validate_value(values);
+     // values = this._validate_value(values); /*TODO check the error here*/
       this.data = values;
   }
-    private _validate_value(values) {
+  /*private _validate_value(values) {
       let numeric;
         for (let i = 0; i < values.length; i++) {
             numeric = /^\d+$/.test(values[i]);
@@ -52,5 +52,5 @@ export class FarmGaugeComponent implements OnInit {
             }
         }
         return values;
-    }
+    }*/
 }

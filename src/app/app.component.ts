@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
         this.nodeEndpointService.getFarms()
             .subscribe(observable => {
                 observable.subscribe(farms => {
-                    console.log("Farms: ", farms);
+                    console.log('Farms: ', farms);
                 this.nodeEndpointService.getFarm(farms[2].uri.split('/')[2])
                         .subscribe(observable => {
                             observable.subscribe(observable => {
