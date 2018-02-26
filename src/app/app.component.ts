@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     public zoom: number;
     public streetControl: boolean;
     public farm: any;
-    public farms: Array<any>;
+    public farms: Array<Farm>;
     private gaugeInfo: Array<any>;
     private unitsInfo: Array<any>;
     private values: Array<any>;
