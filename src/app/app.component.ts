@@ -61,25 +61,6 @@ export class AppComponent implements OnInit {
                         })
                 })
             })
-
-
-        // let finalFarm = null;
-        // this.nodeEndpointService.getFarm()
-        //     .subscribe(obsevable => {
-        //         obsevable.subscribe(observable => {
-        //             observable.subscribe(obsevable2 => {
-        //                 obsevable2.subscribe(currentFarm => {
-        //                     finalFarm = currentFarm;
-        //                     this.farm = finalFarm;
-        //                     this.markers = finalFarm.nodes;
-        //                     this.farms = [];
-        //                     this.farms.push(this.farm);
-        //                     this.farms.push(this.farm);
-        //                     console.log('FINAL: ', this.farm);
-        //                 }, error => console.log(error));
-        //             });
-        //         });
-        //     });
     }
 
     nodeSelected(name, sensors) {
