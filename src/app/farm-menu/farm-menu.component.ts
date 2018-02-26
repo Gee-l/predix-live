@@ -13,6 +13,7 @@ export class FarmMenuComponent implements OnInit {
   private gaugeInfo: Array<any>;
   private unitsInfo: Array<any>;
   private values: Array<any>;
+  private timeSeries: Array<any>
   constructor(private sensorDialog: MatDialog) {
       this.gaugeInfo = [];
       this.unitsInfo = [];
@@ -34,25 +35,20 @@ export class FarmMenuComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             console.log('Dialog Closed');
-            console.log(result);
         });
     }
     private getGaugeInfo(sensors) {
       this.gaugeInfo = [];
       this.values = [];
       this.unitsInfo = [];
-      let i = 0;
-      let i2 = 100;
-        sensors.forEach((value) => {
-            const readings = value.readings;
-            this.gaugeInfo.push({'name': value.tag,
-                'value': [{x: 1519494911 + i, humidity: i2}], 'active': true}); /*TODO replace the hard coded data with timeseries data*/
-            this.unitsInfo.push({'uom': value.uom});
-            this.values.push(readings[readings.length - 1]['value']);
-            i += 1000;
-            i2 -= 10;
-        });
-        this.values = this._validate_value(this.values);
+      sensors.forEach((value) => {
+          const readings = value.readings;
+          this.gaugeInfo.push({'name': value.tag,
+              'value': value.lastReading, 'active': true});
+          this.unitsInfo.push({'uom': value.uom});
+          this.values.push(value.lastReading);
+      });
+      this.values = this._validate_value(this.values);
     }
     private _validate_value(values) {
       for (let i = 0; i < values.length; i++) {

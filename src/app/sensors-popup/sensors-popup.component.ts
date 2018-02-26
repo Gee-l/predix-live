@@ -9,8 +9,11 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 export class SensorsPopupComponent implements OnInit {
   public toggleGraphGauge: boolean;
 
-  constructor(public dialogRef: MatDialogRef<SensorsPopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any)  {}
-  ngOnInit() {}
+  constructor(public dialogRef: MatDialogRef<SensorsPopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any)  {
+  }
+  ngOnInit() {
+      console.log(this.data);
+  }
   public toggleInfo(state) {
     this.toggleGraphGauge = state;
   }
