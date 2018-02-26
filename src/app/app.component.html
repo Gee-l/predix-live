@@ -28,6 +28,6 @@
             </agm-marker>
     </agm-map>
 </div>
-<div [id]="'farms_trigger'" *ngIf="farms != undefined">
+<div [id]="'farms_trigger'" *ngIf="farms.length != 0">
    <app-farm-menu [farms]="farms" [nodes]="farms[0].nodes"></app-farm-menu>
 </div>

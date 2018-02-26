@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material';
 import {SensorsPopupComponent} from './sensors-popup/sensors-popup.component';
 import { NodesEndpointService } from './nodes-endpoint.service';
 import { Router } from '@angular/router';
+import { Farm } from './models/farm';
 
 @Component({
   selector: 'app-root',
@@ -34,12 +35,31 @@ export class AppComponent implements OnInit {
         this.gaugeInfo = [];
         this.unitsInfo = [];
         this.values = [];
+        this.farms = [];
     }
 
     ngOnInit() {
         this.nodeEndpointService.getFarms()
-            .subscribe(res => {
-                console.log("each res is: ", res);
+            .subscribe(observable => {
+                observable.subscribe(farms => {
+                    console.log("Farms: ", farms);
+                this.nodeEndpointService.getFarm(farms[2].uri.split('/')[2])
+                        .subscribe(observable => {
+                            observable.subscribe(observable => {
+                                observable.subscribe(observable => {
+                                    observable.subscribe(farm => {
+                                        if (farm) {
+                                            this.markers = farm.nodes;
+                                            this.farms = [];
+                                            this.farms.push(farm);
+                                            this.farm =  farm;
+                                            console.log("First farm: ", farm.nodes);
+                                        }
+                                    })
+                                })
+                            })
+                        })
+                })
             })
 
 
