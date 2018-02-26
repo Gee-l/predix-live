@@ -31,18 +31,26 @@ export class FarmGaugeComponent implements OnInit {
     this.sensors = [];
     this.panelId = 'panel';
   }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
   sensorsValueChange() {
-      const values = [];
-      console.log(this.data);
+      let values = [];
       this.sensors.forEach(function (sensor) {
           if (sensor.active) {
-              values.push(sensor.value);
+              values.push(sensor.value[sensor.value.length - 1]);
           }
       });
-
+      values = this._validate_value(values);
       this.data = values;
   }
+    private _validate_value(values) {
+      let numeric;
+        for (let i = 0; i < values.length; i++) {
+            numeric = /^\d+$/.test(values[i]);
+            if (values[i] === undefined || !numeric) {
+                values.splice(i, 1);
+                i = -1;
+            }
+        }
+        return values;
+    }
 }

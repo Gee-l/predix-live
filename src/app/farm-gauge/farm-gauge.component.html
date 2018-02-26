@@ -1,12 +1,15 @@
-<div class="{{headerClass}}"><h3>{{header}}</h3></div>
+<div class="{{headerClass}}" *ngIf="header !== ''">
+    <h3>{{header}}</h3>
+</div>
 <div id="{{gaugeContainerId}}">
-      <dx-bar-gauge id="{{gaugeId}}" [startValue]="startValue" [endValue]="endValue" [values]="data">
+    <dx-bar-gauge id="{{gaugeId}}" [startValue]="startValue"
+                  [endValue]="endValue" [values]="data">
         <dxo-label>
-          <dxo-format type="{{type}}" [precision]="precision"></dxo-format>
+            <dxo-format type="{{type}}" [precision]="precision"></dxo-format>
         </dxo-label>
-      </dx-bar-gauge>
-      <div id="{{panelId}}">
-        <dx-check-box *ngFor="let sensor of sensors; let i of index"
+    </dx-bar-gauge>
+      <div id="{{panelId}}" *ngIf="sensors !== undefined">
+        <dx-check-box *ngFor="let sensor of sensors"
                       [text]="sensor.name"
                       [(value)]="sensor.active"
                       (onValueChanged)="sensorsValueChange()"

@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, Inject, ViewChild} from '@angular/core';
 import { Chart } from 'chart.js/dist/Chart.js';
 import { AppOptions} from '../app-options';
-import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
@@ -12,13 +11,19 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 export class SensorinfoComponent implements OnInit {
   @ViewChild('sensorcn') sensorcn: ElementRef;
   public sensorInfo: any;
-  private sensorOptions: Object;
-  private node;
-  private dataPoints = [];
-  private labelsPoints = [];
+  private sensorOptions: any;
+  private dataPoints: Array<any>;
+  private labelsPoints: Array<any>;
+  private labels: Array<string>;
+  private colors: Array<string>;
 
-  constructor(private route: ActivatedRoute, @Inject(MAT_DIALOG_DATA) public data) {
-    this._getMapData(data.sensor);
+  constructor(@Inject(MAT_DIALOG_DATA) public data) {
+    console.log(this.data);
+    this.dataPoints = [];
+    this.colors = ['#000', '#041', '#211', '#111', '#023'];
+    this.labelsPoints = [];
+    this.labels = [];
+    this._getMapData(this.data.sensors);
     this.sensorOptions = this.setOptions('line', this.labelsPoints, 'Sensor Data',
       this.dataPoints, 'green', '#fff', 2, true);
   }
@@ -38,27 +43,42 @@ export class SensorinfoComponent implements OnInit {
   }
   ngOnInit() {
     this.dataGraph();
-    this.node = this.route.params.subscribe(params => {console.log('Testing' + JSON.stringify(params.node));});
   }
   dataGraph() {
-    console.log('Loading Data Graph');
-    const sensorOpt = new AppOptions().chart_options(this.sensorOptions);
-    console.log(this.sensorcn.nativeElement);
-    this.sensorInfo = new Chart(this.sensorcn.nativeElement, sensorOpt);
+      const sensorOpt = new AppOptions().chart_options(this.sensorOptions);
+      this.dataPoints.forEach((value, key) => {
+          sensorOpt.data.datasets.push({
+              label: this.labels[key],
+              data: value,
+              borderColor: '#000',
+              borderWidth: '#fff',
+              backgroundColor: this.colors[key]
+          });
+      });
+      this.sensorInfo = new Chart(this.sensorcn.nativeElement, sensorOpt);
   }
-  private _getMapData(sensor) {
+  private _getMapData(sensors) {
       this.dataPoints = [];
       this.labelsPoints = [];
-    sensor.readings.forEach((value, key) => {
-      console.log('Key: ' + key);
-        for (const key2 in value) {
-          console.log('Runnning');
-          if (key2 !== 'x' && value.hasOwnProperty(key2)) {
-            this.dataPoints.push(value[key2]);
-          } else if (value.hasOwnProperty(key2)) {
-            this.labelsPoints.push(new Date(value[key2]).toLocaleTimeString());
-          }
-        }
-    });
+      sensors.forEach((sensor) => {
+        const dataPoint = [];
+        const labelPoint = [];
+          sensor.value.forEach((value) => {
+              console.log(value);
+              for (const key2 in value) {
+                  if (key2 !== 'x' && value.hasOwnProperty(key2)) {
+                      dataPoint.push(value[key2]);
+                      console.log(value[key2]);
+                  } else if (value.hasOwnProperty(key2)) {
+                      labelPoint.push(new Date(value[key2]).toLocaleTimeString());
+                  }
+              }
+          });
+          this.labels.push(sensor.name);
+          this.dataPoints.push(dataPoint);
+          console.log(this.dataPoints);
+          this.labelsPoints.push(labelPoint);
+          console.log(this.labelsPoints);
+      });
   }
 }
