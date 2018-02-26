@@ -1,17 +1,12 @@
 export class AppOptions {
-  constructor(private chart_option?: Object) {}
+  constructor(private chart_option?: any) {}
 
   public chart_options(options) {
     this.chart_option = {
       type: options['type'],
       data: {
         labels: options['labels'],
-        datasets: [{
-          label: options['label'],
-          data: options['data'],
-          borderColor: options['bcolor'],
-          borderWidth: options['width']
-        }]
+        datasets: []
       },
       options: {
         layout: {

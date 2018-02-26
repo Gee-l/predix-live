@@ -37,11 +37,13 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        let finalFarm = null;
         this.nodeEndpointService.getFarms()
             .subscribe(res => {
-                console.log(res);
+                console.log("each res is: ", res);
             })
+
+
+        // let finalFarm = null;
         // this.nodeEndpointService.getFarm()
         //     .subscribe(obsevable => {
         //         obsevable.subscribe(observable => {
@@ -54,7 +56,7 @@ export class AppComponent implements OnInit {
         //                     this.farms.push(this.farm);
         //                     this.farms.push(this.farm);
         //                     console.log('FINAL: ', this.farm);
-        //                 }, error => console.log(error))
+        //                 }, error => console.log(error));
         //             });
         //         });
         //     });
@@ -67,7 +69,7 @@ export class AppComponent implements OnInit {
             data: { fname: this.farm.name, name: name, sensors: sensors},
             position: {top: '0%'}
         });
-        console.log('My Id: ' + dialogRef.id);
+        console.log(sensors);
         dialogRef.afterClosed().subscribe(result => {
             console.log(this.router.navigate(['/']));
             console.log('Dialog Closed');
@@ -89,7 +91,10 @@ export class AppComponent implements OnInit {
         }, 10000);*/
     }
     private getGaugeInfo(sensors) {
-        sensors.forEach((value, key) => {
+        this.unitsInfo = [];
+        this.gaugeInfo = [];
+        this.values = [];
+        sensors.forEach((value) => {
             const readings = value.readings;
             this.gaugeInfo.push({'name': value.tag, 'value': readings[readings.length - 1]['value'], 'active': true});
             this.unitsInfo.push({'uom': value.uom});

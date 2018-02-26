@@ -2,7 +2,9 @@
   <div *ngIf="!toggleGraphGauge; else graphInfo">
     <app-farm-gauge [data]="data.values" [sensors]="data.sensors"></app-farm-gauge>
   </div>
-  <ng-template #graphInfo>Graph Information</ng-template>
+  <ng-template #graphInfo>
+    <app-sensorinfo></app-sensorinfo>
+  </ng-template>
 </div>
 <br>
 <button mat-icon-button mat-ripple (click)="toggleInfo(false)"><mat-icon>wifi_tethering</mat-icon></button>

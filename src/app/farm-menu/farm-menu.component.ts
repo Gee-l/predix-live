@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit} from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import {SensorsPopupComponent} from '../sensors-popup/sensors-popup.component';
 import { MatDialog} from '@angular/material';
 
@@ -34,19 +34,34 @@ export class FarmMenuComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(result => {
             console.log('Dialog Closed');
+            console.log(result);
         });
     }
     private getGaugeInfo(sensors) {
       this.gaugeInfo = [];
       this.values = [];
-        sensors.forEach((value, key) => {
+      this.unitsInfo = [];
+      let i = 0;
+      let i2 = 100;
+        sensors.forEach((value) => {
             const readings = value.readings;
-            this.gaugeInfo.push({'name': value.tag, 'value': readings[readings.length - 1]['value'], 'active': true});
+            this.gaugeInfo.push({'name': value.tag,
+                'value': [{x: 1519494911 + i, humidity: i2}], 'active': true}); /*TODO replace the hard coded data with timeseries data*/
             this.unitsInfo.push({'uom': value.uom});
             this.values.push(readings[readings.length - 1]['value']);
+            i += 1000;
+            i2 -= 10;
         });
-        console.log(this.gaugeInfo);
-        console.log(this.unitsInfo);
+        this.values = this._validate_value(this.values);
+    }
+    private _validate_value(values) {
+      for (let i = 0; i < values.length; i++) {
+          if (values[i] === undefined) {
+              values.splice(i, 1);
+              i = -1;
+          }
+      }
+      return values;
     }
 }
 
