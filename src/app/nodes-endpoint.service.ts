@@ -16,10 +16,10 @@ export class NodesEndpointService {
   constructor(private http: HttpClient) { }
 
   getDataPoints(nodeName, tag) {
-    return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?limit=10&node=${nodeName}&sensor=${tag}`);
+    return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?timeseries=true&sensor=${tag}&node=${nodeName}&limit=10`);
   }
 
-  getFarm(farmUri) {
+  private _getFarmObervables(farmUri) {
     let farm: Farm = null;
     return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/${farmUri}`)
       .pipe(map((_farm: any) => {
@@ -38,16 +38,22 @@ export class NodesEndpointService {
                   .pipe(map((readings:any) => {
 
                     farm.nodes[nodeIndex].sensors[sensorIndex].readings = readings;
-                    Object.keys(readings[readings.length - 1])
-                      .forEach(key => {
-                        if(key == "Humidity" || key == "InternalTemperature" || key == "Temperature" ||  key == "Bat" || key == "Motion" || key == "Light")
-                          farm.nodes[nodeIndex].sensors[sensorIndex].lastReading = readings[readings.length - 1][key];
-                      });
-                    return farm;
+                    if (readings[readings.length - 1]) {
+                      Object.keys(readings[readings.length - 1])
+                        .forEach(key => {
+                          if(key == "Humidity" || key == "InternalTemperature" || key == "Temperature" ||  key == "Bat" || key == "Motion" || key == "Light")
+                            farm.nodes[nodeIndex].sensors[sensorIndex].lastReading = readings[readings.length - 1][key];
+                        });
+                      return farm;
+                    }
                   }));
               });
           });
       }));
+  }
+
+  getFarm(farmUri) {
+    return this._getFarmObervables(farmUri);
   }
 
   getFarms() {
