@@ -46,7 +46,6 @@ export class AppComponent extends FarmMenuComponent implements OnInit {
         this.nodeEndpointService.getFarms()
             .subscribe(observable => {
                 observable.subscribe(farms => {
-                    console.log('Farms: ', farms);
                 this.nodeEndpointService.getFarm(farms[2].uri.split('/')[2])
                         .subscribe(observable => {
                             observable.subscribe(observable => {
@@ -57,7 +56,6 @@ export class AppComponent extends FarmMenuComponent implements OnInit {
                                             this.farms = [];
                                             this.farms.push(farm);
                                             this.farm =  farm;
-                                            console.log("First farm: ", farm.nodes);
                                         }
                                     })
                                 })
