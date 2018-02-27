@@ -40,30 +40,64 @@ export class AppComponent extends FarmMenuComponent implements OnInit {
         this.gaugeInfo = [];
         this.unitsInfo = [];
         this.values = [];
-        this.farms = [];
     }
     ngOnInit() {
-        this.nodeEndpointService.getFarms()
-            .subscribe(observable => {
-                observable.subscribe(farms => {
-                this.nodeEndpointService.getFarm(farms[2].uri.split('/')[2])
-                        .subscribe(observable => {
-                            observable.subscribe(observable => {
-                                observable.subscribe(observable => {
-                                    observable.subscribe(farm => {
-                                        if (farm) {
-                                            this.markers = farm.nodes;
-                                            this.farms = [];
-                                            this.farms.push(farm);
-                                            this.farm =  farm;
-                                        }
+        // this.nodeEndpointService.getFarms()
+        //     .subscribe(observable => {
+        //         observable.subscribe(farms => {
+        //            // farms.forEach((farm, index) => {
+        //                 this.getFarm(farms[2].uri.split('/')[2]);
+        //             //})
+        //         })
+        //     })
+        this.nodeEndpointService.getAllInfo()
+            .subscribe(ob => {
+                ob.subscribe(ob => {
+                    ob.subscribe(ob => {
+                        ob.subscribe(ob => {
+                            ob.subscribe(ob => {
+                                ob.subscribe(ob => {
+                                    ob.subscribe(farms => {
+                                        this.farms = [];
+                                        this.farms = farms;
+                                        this.farm = farms[2];
+                                        this.markers =  this.farm.nodes;
                                     })
                                 })
                             })
                         })
+                    })
                 })
             })
     }
+
+    public reRender(farm) {
+        this.farm = farm;
+        this.markers = farm.markers;
+    }
+
+    getFarm(farmUri) {
+        this.nodeEndpointService.getFarm(farmUri)
+        .subscribe(observable => {
+            observable.subscribe(observable => {
+                observable.subscribe(observable => {
+                    observable.last()
+                    observable.subscribe(farm => {
+                        console.log(farm);
+                        if (farm) {
+                            this.markers = farm.nodes;
+                            this.farm = farm;
+                            this.farms = [];
+                            this.farms.push(farm);
+                            return farm;
+                        }
+                    })
+                })
+            })
+        })
+    }
+
+
     setMap() {
         this.mapRef = this.map;
     }

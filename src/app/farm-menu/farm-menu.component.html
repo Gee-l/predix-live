@@ -8,11 +8,11 @@
 </mat-list>
   <mat-menu #farmsMenu="matMenu" [overlapTrigger]="false">
     <div *ngIf="farms != undefined">
-      <button mat-menu-item *ngFor="let farm of farms" (click)="updateNodes(farm.nodes)">{{farm.name}}</button>
+      <button mat-menu-item *ngFor="let farm of farms" (click)="updateNodes(farm)">{{farm.name}}</button>
     </div>
   </mat-menu>
   <mat-menu #nodesMenu="matMenu" [overlapTrigger]="false">
-    <div *ngIf="nodes != undefined">
+    <div *ngIf="nodes != undefined"> 
       <button mat-menu-item *ngFor="let node of nodes" (click)="nodeSelected(node.name, node.sensors, node)">
         <mat-icon>keyboard_arrow_right</mat-icon>{{node.name}}
       </button><br>
