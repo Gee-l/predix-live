@@ -16,7 +16,7 @@ export class NodesEndpointService {
   constructor(private http: HttpClient) { }
 
   getDataPoints(nodeName, tag) {
-    return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?timeseries=false&limit=50&order=desc&startValue=1&startPeriod=w&sensor=${tag}&resolution=7200&node=${nodeName}`);
+    return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/datapoints?timeseries=false&limit=10&order=desc&startValue=1&startPeriod=w&sensor=${tag}&resolution=7200&node=${nodeName}`);
   }
 
   private _getFarmObervables(farmUri) {
