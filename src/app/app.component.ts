@@ -3,7 +3,8 @@ import { MatDialog } from '@angular/material';
 import {SensorsPopupComponent} from './sensors-popup/sensors-popup.component';
 import { NodesEndpointService } from './nodes-endpoint.service';
 import { Router } from '@angular/router';
-import { Farm } from './models/farm';
+import { FarmMenuComponent } from './farm-menu/farm-menu.component';
+import { GoogleMapsAPIWrapper } from '@agm/core';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,11 @@ import { Farm } from './models/farm';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent extends FarmMenuComponent implements OnInit {
     @ViewChild(MatDialog) mat: ElementRef;
+    @ViewChild(GoogleMapsAPIWrapper) map: ElementRef;
     public markers;
+    public mapRef: any;
     public typeId: string;
     public minZoom: number;
     public maxZoom: number;
@@ -21,15 +24,17 @@ export class AppComponent implements OnInit {
     public streetControl: boolean;
     public farm: any;
     public farms: Array<any>;
-    private gaugeInfo: Array<any>;
-    private unitsInfo: Array<any>;
-    private values: Array<any>;
+    protected gaugeInfo: Array<any>;
+    protected unitsInfo: Array<any>;
+    protected values: Array<any>;
 
     constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private router: Router) {
+        super(sensorDialog);
         this.typeId = 'satellite';
         this.minZoom = 15;
         this.maxZoom = 17;
         this.zoom = 17;
+        this.mapRef = this.map;
         this.streetControl  = false;
         this.farm = null;
         this.gaugeInfo = [];
@@ -37,7 +42,6 @@ export class AppComponent implements OnInit {
         this.values = [];
         this.farms = [];
     }
-
     ngOnInit() {
         this.nodeEndpointService.getFarms()
             .subscribe(observable => {
@@ -62,22 +66,12 @@ export class AppComponent implements OnInit {
                 })
             })
     }
-
-    nodeSelected(name, sensors) {
-        this.getGaugeInfo(sensors);
-        const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
-            width: '40%',
-            data: { fname: this.farm.name, name: name, sensors: sensors},
-            position: {top: '0%'}
-        });
-        console.log(sensors);
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(this.router.navigate(['/']));
-            console.log('Dialog Closed');
-            console.log('Result');
-        });
+    setMap() {
+        this.mapRef = this.map;
     }
     displayInfoWindow(nodeInfo, gm) {
+        console.log('Checking', this.map);
+       // console.log('Native: ', this.map.setCenter({lat: 23, lng: 29}));
         if (gm.lastOpen != null) {
             gm.lastOpen.close();
         }
@@ -85,23 +79,10 @@ export class AppComponent implements OnInit {
         nodeInfo.open();
     }
     closeInfoWindow(nodeInfo, gm) {
-       /* setTimeout((data) => {
+        setTimeout((data) => {
             if (gm.lastOpen != null) {
                 gm.lastOpen.close();
             }
-        }, 10000);*/
-    }
-    private getGaugeInfo(sensors) {
-        this.unitsInfo = [];
-        this.gaugeInfo = [];
-        this.values = [];
-        sensors.forEach((value) => {
-            const readings = value.readings;
-            this.gaugeInfo.push({'name': value.tag, 'value': readings[readings.length - 1]['value'], 'active': true});
-            this.unitsInfo.push({'uom': value.uom});
-            this.values.push(readings[readings.length - 1]['value']);
-        });
-        console.log(this.gaugeInfo);
-        console.log(this.unitsInfo);
+        }, 1000);
     }
 }

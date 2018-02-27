@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
 import {SensorsPopupComponent} from '../sensors-popup/sensors-popup.component';
 import { MatDialog} from '@angular/material';
 
@@ -10,11 +10,12 @@ import { MatDialog} from '@angular/material';
 export class FarmMenuComponent implements OnInit {
   @Input() farms: Array<any>;
   @Input() nodes: Array<any>;
-  private gaugeInfo: Array<any>;
-  private unitsInfo: Array<any>;
-  private values: Array<any>;
-  private timeSeries: Array<any>;
-  constructor(private sensorDialog: MatDialog) {
+  @Input() mapRef: any;
+  protected gaugeInfo: Array<any>;
+  protected unitsInfo: Array<any>;
+  protected values: Array<any>;
+  protected timeSeries: Array<any>;
+  constructor(protected sensorDialog: MatDialog) {
       this.gaugeInfo = [];
       this.unitsInfo = [];
       this.values = [];
@@ -26,7 +27,8 @@ export class FarmMenuComponent implements OnInit {
       this.nodes = nodes;
     }
   }
-  public nodeSelected(name, sensors) {
+  public nodeSelected(name, sensors, marker) {
+      this.mapRef.setCenter({lat: marker.location.latitude, lng: marker.location.longitude});
       this.getGaugeInfo(sensors);
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
             width: '50%',
@@ -38,7 +40,7 @@ export class FarmMenuComponent implements OnInit {
             console.log('Dialog Closed');
         });
     }
-    private getGaugeInfo(sensors) {
+    protected getGaugeInfo(sensors) {
       this.gaugeInfo = [];
       this.values = [];
       this.unitsInfo = [];
@@ -46,13 +48,13 @@ export class FarmMenuComponent implements OnInit {
       sensors.forEach((value) => {
           this.gaugeInfo.push({'name': value.tag,
               'value': value.lastReading, 'active': true});
-          this.unitsInfo.push({'uom': value.uom});
+          this.unitsInfo.push(value.uom);
           this.values.push(value.lastReading);
           this.timeSeries.push(value.readings);
       });
       this.values = this._validate_value(this.values);
     }
-    private _validate_value(values) {
+    protected _validate_value(values) {
       for (let i = 0; i < values.length; i++) {
           if (values[i] === undefined) {
               values.splice(i, 1);

@@ -15,23 +15,50 @@ export class AppOptions {
                   right: 50,
                   top: 0,
                   bottom: 0
-              }
+              },
+              fontColor: '#fff'
               },
           legend: {
               labels: {
+                  usePointStyle: true,
                 fontColor: '#fff'
             }
         },
+          title: {
+              display: true
+          },
           tooltips: {
-              mode: 'point'
+              mode: 'index',
+              intersect: false
+          },
+          hover: {
+              mode: 'index',
+              intersect: true
           },
         scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: options['startZero']
-            }
-          }]
-        }
+              xAxes: [{
+                  scaleLabel: {
+                      display: true,
+                      labelString: 'Time',
+                      fontColor: '#fff'
+                  },
+                  ticks: {
+                      fontColor: '#fff'
+                  }
+              }],
+            yAxes: [{
+                stacked: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Value',
+                    fontColor: '#fff'
+                },
+                ticks: {
+                    fontColor: '#fff',
+                    beginAtZero: true
+                }
+              }]
+          }
       }
     };
     return this.chart_option;

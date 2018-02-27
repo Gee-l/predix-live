@@ -1,9 +1,9 @@
 <div *ngIf="farm != undefined">
     <agm-map [latitude]="farm.location.latitude" [longitude]="farm.location.longitude" [mapTypeId]="typeId"
-            [maxZoom]="maxZoom" [minZoom]="minZoom" [zoom]="zoom" [streetViewControl]="streetControl" #gm>
+            [maxZoom]="maxZoom" [minZoom]="minZoom" [zoom]="zoom" [streetViewControl]="streetControl" #gm (mapReady)="setMap()">
         <agm-marker *ngFor="let marker of markers; let i of index" [latitude]="marker.location.latitude"
                         [longitude]="marker.location.longitude" [title]="marker.name"
-                        (markerClick)="nodeSelected(marker.name, marker.sensors)"
+                        (markerClick)="nodeSelected(marker.name, marker.sensors, marker)"
                         (mouseOver)="displayInfoWindow(nodeInfo, gm)"
                         (mouseOut)="closeInfoWindow(nodeInfo, gm)" #myNode>
 
@@ -29,5 +29,5 @@
     </agm-map>
 </div>
 <div [id]="'farms_trigger'" *ngIf="farms.length != 0">
-   <app-farm-menu [farms]="farms" [nodes]="farms[0].nodes"></app-farm-menu>
+   <app-farm-menu [farms]="farms" [nodes]="farms[0].nodes" [mapRef]="mapRef"></app-farm-menu>
 </div>

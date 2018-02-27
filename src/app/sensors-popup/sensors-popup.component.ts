@@ -12,17 +12,9 @@ export class SensorsPopupComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<SensorsPopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any)  {
   }
   ngOnInit() {
-      console.log(this.data);
+      console.log('Sensor popup data: ', this.data);
   }
   public toggleInfo(state) {
     this.toggleGraphGauge = state;
-  }
-  private _validate_data(data) {
-    data.forEach((value) => {
-      if (value === undefined) {
-          data.pop();
-      }
-    });
-      console.log(data);
   }
 }

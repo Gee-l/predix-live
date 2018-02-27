@@ -19,7 +19,7 @@ export class SensorinfoComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data) {
     this.dataPoints = [];
-    this.colors = ['#000', '#041', 'yellow', 'cyan', 'pink'];
+    this.colors = ['rgba(212, 198, 117, 0.7)', 'rgba(208, 154, 88, 0.7))', 'rgba(171, 71, 71, 0.7)', 'rgba(126, 62, 62, 0.7)', 'rgba(60, 60, 69, 0.7)'];
     this.labelsPoints = [];
     this.labels = [];
     this._getMapData(this.data.timeSeries);
@@ -50,7 +50,8 @@ export class SensorinfoComponent implements OnInit {
       console.log(this.labels);
       this.dataPoints.forEach((value, key) => {
           sensorOpt.data.datasets.push({
-              label: this.labels[key] === 'InternalTemperature' ? 'T' : this.labels[key],
+              label: this.labels[key] === 'InternalTemperature' ?
+                  'Temp (' + this.data.unitsInfo[key] + ')' : this.labels[key] + `(${this.data.unitsInfo[key]})`,
               data: value,
               borderColor: '#000',
               borderWidth: '#fff',
