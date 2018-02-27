@@ -28,7 +28,7 @@ export class FarmMenuComponent implements OnInit {
     }
   }
   public nodeSelected(name, sensors, marker) {
-      this.mapRef.setCenter({lat: marker.location.latitude, lng: marker.location.longitude});
+      this.mapRef.setCenter({lat: marker.location.latitude + 0.0015, lng: marker.location.longitude});
       this.getGaugeInfo(sensors);
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
             width: '50%',
