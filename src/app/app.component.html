@@ -5,7 +5,7 @@
                         [longitude]="marker.location.longitude" [title]="marker.name"
                         (markerClick)="nodeSelected(marker.name, marker.sensors, marker)"
                         (mouseOver)="displayInfoWindow(nodeInfo, gm)"
-                        (mouseOut)="closeInfoWindow(nodeInfo, gm)" #myNode [iconUrl]="'/assets/logo.png'">
+                        (mouseOut)="closeInfoWindow(nodeInfo, gm)" #myNode [iconUrl]="'/assets/nodeInactive.png'">
 
               <agm-info-window #nodeInfo [disableAutoPan]="false" style="text-align: center;">
                    <h4 style="text-align: center">Node: {{marker.name}}</h4>

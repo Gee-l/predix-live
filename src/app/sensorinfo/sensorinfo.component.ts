@@ -66,7 +66,6 @@ export class SensorinfoComponent implements OnInit {
       this.dataPoints = [];
       this.labelsPoints = [];
       this.labels = [];
-      console.log('Get Data: ', timeSeries);
       timeSeries.forEach((tValue) => {
         const dataPoint = [];
         const labelPoint = [];
