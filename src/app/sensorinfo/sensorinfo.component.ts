@@ -44,6 +44,7 @@ export class SensorinfoComponent implements OnInit {
   }
   ngOnInit() {
     this.dataGraph();
+    console.log(this.data);
   }
   dataGraph() {
       const sensorOpt = new AppOptions().chart_options(this.sensorOptions);
@@ -65,17 +66,13 @@ export class SensorinfoComponent implements OnInit {
       this.dataPoints = [];
       this.labelsPoints = [];
       this.labels = [];
+      console.log('Get Data: ', timeSeries);
       timeSeries.forEach((tValue) => {
         const dataPoint = [];
         const labelPoint = [];
           tValue.forEach((value) => {
-              for (const key2 in value) {
-                  if (key2 !== 'x' && value.hasOwnProperty(key2)) {
-                      dataPoint.push(value[key2]);
-                  } else if (value.hasOwnProperty(key2)) {
-                      labelPoint.push(new Date(value[key2]).toLocaleTimeString());
-                  }
-              }
+                      dataPoint.push(value.value);
+                      labelPoint.push(new Date(value.time).toLocaleTimeString());
           });
           this.dataPoints.push(dataPoint);
           console.log('Data Points', this.dataPoints);
