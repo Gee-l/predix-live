@@ -1,9 +1,9 @@
 <mat-list [id]="'farms_selector'">
   <mat-list-item>
-    <button mat-icon-button mat-ripple [matMenuTriggerFor]="farmsMenu"><mat-icon>games</mat-icon></button>
+    <button mat-icon-button mat-ripple [matMenuTriggerFor]="farmsMenu"  @fade><mat-icon>games</mat-icon></button>
   </mat-list-item>
   <mat-list-item>
-    <button mat-icon-button mat-ripple [matMenuTriggerFor]="nodesMenu"><mat-icon>apps</mat-icon></button>
+    <button mat-icon-button mat-ripple [matMenuTriggerFor]="nodesMenu"  @fade><mat-icon>apps</mat-icon></button>
   </mat-list-item>
 </mat-list>
   <mat-menu #farmsMenu="matMenu" [overlapTrigger]="false">

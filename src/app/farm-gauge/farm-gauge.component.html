@@ -3,16 +3,10 @@
 </div>
 <div id="{{gaugeContainerId}}">
     <dx-bar-gauge id="{{gaugeId}}" [startValue]="startValue"
-                  [endValue]="endValue" [values]="data">
-        <dxo-label>
+                  [endValue]="endValue" [values]="data" [backgroundColor]="'#1B1E27'" [tooltip]="true">
+        <dxo-label [customizeText]="customizeText">
             <dxo-format type="{{type}}" [precision]="precision"></dxo-format>
         </dxo-label>
+        <dxo-tooltip [enabled]="true" [customizeTooltip]="customTooltip"></dxo-tooltip>
     </dx-bar-gauge>
-      <div id="{{panelId}}" *ngIf="sensors !== undefined">
-        <dx-check-box *ngFor="let sensor of sensors"
-                      [text]="sensor.name"
-                      [(value)]="sensor.active"
-                      (onValueChanged)="sensorsValueChange()"
-        ></dx-check-box>
-      </div>
 </div>

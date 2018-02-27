@@ -1,4 +1,5 @@
 .mat-menu-item {
+    transition: 0.8s;
     background-color: white;
     color: #A32121;
     border-radius: 10px 0 10px 0;
@@ -6,17 +7,26 @@
     font-size: 14px;
 }
 .mat-menu-item .mat-icon {
+    transition: 0.8s;
     color: #a50610;
 }
 .mat-menu-item .mat-icon:hover {
+    transition: 0.8s;
     color: white;
 }
 .mat-menu-item:hover{
+    transition: 0.8s;
     background-color: #1B1E27;
     opacity: 0.9;
 }
 .mat-icon-button {
+    transition: 0.8s;
     background-color: #ffffff;
+    color: #a50610;
+}
+.mat-icon-button:hover {
+    background-color: #1B1E27;
+    transition: 0.8s;
     color: #a50610;
 }
 ::ng-deep .mat-menu-panel {

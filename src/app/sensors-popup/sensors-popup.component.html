@@ -1,6 +1,6 @@
 <div [id]="'mySensorInfo'">
   <div *ngIf="!toggleGraphGauge; else graphInfo">
-    <app-farm-gauge [data]="data.values" [sensors]="data.sensors"></app-farm-gauge>
+    <app-farm-gauge [data]="data.values" [sensors]="data.sensors" [diaData]="data.values"></app-farm-gauge>
   </div>
   <ng-template #graphInfo>
     <app-sensorinfo></app-sensorinfo>

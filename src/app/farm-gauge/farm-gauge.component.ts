@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 
 @Component({
   selector: 'app-farm-gauge',
@@ -17,6 +17,7 @@ export class FarmGaugeComponent implements OnInit {
   @Input() gaugeId: string;
   @Input() panelId: string;
   @Input() sensors: Array<any>;
+  @Input() diaData: any;
 
   constructor() {
     this.startValue = 0;
@@ -41,6 +42,13 @@ export class FarmGaugeComponent implements OnInit {
       });
      // values = this._validate_value(values); /*TODO check the error here*/
       this.data = values;
+  }
+  customizeText(arg) {
+      console.log(arg);
+    return arg.valueText;
+  }
+  customTooltip(arg) {
+    console.log(arg);
   }
   /*private _validate_value(values) {
       let numeric;
