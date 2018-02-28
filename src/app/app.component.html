@@ -1,7 +1,8 @@
 <div *ngIf="farm != undefined" id="gmap">
     <agm-map [latitude]="farm.location.latitude" [longitude]="farm.location.longitude" [mapTypeId]="typeId"
             [maxZoom]="maxZoom" [minZoom]="minZoom" [zoom]="zoom" [streetViewControl]="streetControl" #gm (mapReady)="setMap()">
-        <agm-marker *ngFor="let marker of markers; let i of index" [latitude]="marker.location.latitude"
+        <span *ngFor="let marker of markers; let i of index">
+            <agm-marker *ngIf="marker.status === 'ON'; else offlineNode" [latitude]="marker.location.latitude"
                         [longitude]="marker.location.longitude" [title]="marker.name"
                         (markerClick)="nodeSelected(marker.name, marker.sensors, marker)"
                         (mouseOver)="displayInfoWindow(nodeInfo, gm)"
@@ -26,8 +27,14 @@
                    </ng-template>
                </agm-info-window>
             </agm-marker>
+            <ng-template #offlineNode>
+                <agm-marker [latitude]="marker.location.latitude"
+                            [longitude]="marker.location.longitude" [title]="marker.name">
+            </agm-marker>
+            </ng-template>
+        </span>
     </agm-map>
 </div>
 <div [id]="'farms_trigger'" *ngIf="farms != undefined">
-   <app-farm-menu [farms]="farms" [nodes]="farms[0].nodes" [mapRef]="mapRef"></app-farm-menu>
+   <app-farm-menu [farms]="farms" [nodes]="markers" [mapRef]="mapRef" [(farm)]="farm" [(markers)]="markers"></app-farm-menu>
 </div>

@@ -1,6 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, OnChanges} from '@angular/core';
 import { MatDialog } from '@angular/material';
-import {SensorsPopupComponent} from './sensors-popup/sensors-popup.component';
 import { NodesEndpointService } from './nodes-endpoint.service';
 import { Router } from '@angular/router';
 import { FarmMenuComponent } from './farm-menu/farm-menu.component';
@@ -13,7 +12,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent extends FarmMenuComponent implements OnInit {
+export class AppComponent extends FarmMenuComponent implements OnInit, OnChanges {
     @ViewChild(MatDialog) mat: ElementRef;
     @ViewChild(GoogleMapsAPIWrapper) map: ElementRef;
     public markers;
@@ -78,45 +77,22 @@ export class AppComponent extends FarmMenuComponent implements OnInit {
                 })
             })*/
     }
-
     public reRender(farm) {
         this.farm = farm;
         this.markers = farm.markers;
     }
-
-    getFarm(farmUri) {
-        this.nodeEndpointService.getFarm(farmUri)
-        .subscribe(observable => {
-            observable.subscribe(observable => {
-                observable.subscribe(observable => {
-                    observable.last()
-                    observable.subscribe(farm => {
-                        console.log(farm);
-                        if (farm) {
-                            // this.markers = farm.nodes;
-                            // this.farm = farm;
-                            // this.farms = [];
-                            // this.farms.push(farm);
-                            return farm;
-                        }
-                    })
-                })
-            })
-        })
-    }
-
-
     setMap() {
         this.mapRef = this.map;
     }
     displayInfoWindow(nodeInfo, gm) {
-        console.log('Checking', this.map);
+        console.log('I was Called');
        // console.log('Native: ', this.map.setCenter({lat: 23, lng: 29}));
         if (gm.lastOpen != null) {
             gm.lastOpen.close();
         }
         gm.lastOpen = nodeInfo;
         nodeInfo.open();
+        return (gm);
     }
     closeInfoWindow(nodeInfo, gm) {
         setTimeout((data) => {

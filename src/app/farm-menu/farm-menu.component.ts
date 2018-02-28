@@ -1,8 +1,7 @@
-import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import {SensorsPopupComponent} from '../sensors-popup/sensors-popup.component';
 import { MatDialog} from '@angular/material';
 import {animate, style, transition, trigger} from '@angular/animations';
-import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-farm-menu',
@@ -21,8 +20,10 @@ export class FarmMenuComponent implements OnInit {
   @Input() farms: Array<any>;
   @Input() nodes: Array<any>;
   @Input() mapRef: any;
-  @Input() markers: any;
   @Input() farm: any;
+  @Input() markers: any;
+  @Output() farmChange: EventEmitter<any> = new EventEmitter();
+  @Output() markersChange: EventEmitter<any> = new EventEmitter();
   protected gaugeInfo: Array<any>;
   protected unitsInfo: Array<any>;
   protected values: Array<any>;
@@ -35,8 +36,14 @@ export class FarmMenuComponent implements OnInit {
   }
   ngOnInit() {}
   public updateNodes(farm) {
-    this.farm = farm;
-    this.markers = farm.nodes;
+      this.farmChange.emit(farm);
+      this.markers = farm.nodes;
+      this.markersChange.emit(this.markers);
+      console.log(this.markers);
+      console.log(this.farm);
+    if (JSON.stringify(this.nodes) !== JSON.stringify(farm.nodes)) {
+      this.nodes = farm.nodes;
+    }
   }
   public nodeSelected(name, sensors, marker) {
       this.mapRef.setCenter({lat: marker.location.latitude + 0.0015, lng: marker.location.longitude});
@@ -50,6 +57,9 @@ export class FarmMenuComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log('Dialog Closed');
         });
+    }
+    public offlineNodeSelected(name, sensors, marker) {
+        this.mapRef.setCenter({lat: marker.location.latitude + 0.0015, lng: marker.location.longitude});
     }
     protected getGaugeInfo(sensors) {
       this.gaugeInfo = [];
