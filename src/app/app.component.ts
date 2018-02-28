@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FarmMenuComponent } from './farm-menu/farm-menu.component';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-root',
@@ -89,13 +90,20 @@ export class AppComponent extends FarmMenuComponent implements OnInit {
         if (uri) {
             this.nodeEndpointService.getFarm(uri)
                 .subscribe(ob => {
-                    ob.subscribe(ob => {
-                        ob.subscribe(ob => {
-                            ob.subscribe(farm => {
-                                this.farm = farm;
-                                this.markers = farm.nodes;
+                    ob.subscribe((ob:any) => {
+                        if (ob.subscribe) {
+                            ob.subscribe(ob => {
+                                ob.subscribe(farm => {
+                                    this.farm = farm;
+                                    console.log(farm)
+                                    this.markers = farm.nodes;
+                                })
                             })
-                        })
+                        } else {
+                            this.farm = ob;
+                            console.log(ob)
+                            this.markers = ob.nodes;
+                        }
                     })
                 })
         }
