@@ -23,6 +23,7 @@
     transition: 0.8s;
     background-color: #ffffff;
     color: #a50610;
+    box-shadow: 4px 3px 9px #000;
 }
 .mat-icon-button:hover {
     background-color: #1B1E27;

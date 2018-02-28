@@ -1,13 +1,13 @@
 <mat-list [id]="'farms_selector'">
   <mat-list-item>
-    <button mat-icon-button mat-ripple [matMenuTriggerFor]="nodesMenu"  @fade><mat-icon>apps</mat-icon></button>
+    <button mat-icon-button mat-ripple [matMenuTriggerFor]="nodesMenu"  @fade><mat-icon>router</mat-icon></button>
   </mat-list-item>
 </mat-list>
   <mat-menu #nodesMenu="matMenu" [overlapTrigger]="false">
     <div *ngIf="nodes != undefined">
       <span *ngFor="let node of nodes">
         <button *ngIf="node.status === 'ON'; else offlineButton" mat-menu-item (click)="nodeSelected(node.name, node.sensors, node)">
-        <mat-icon>keyboard_arrow_right</mat-icon>{{node.name}}
+        <mat-icon>keyboard_arrow_right</mat-icon>{{node.description}}
       </button>
         <ng-template #offlineButton>
           <button mat-menu-item (click)="offlineNodeSelected(node.name, node.sensors, node)">

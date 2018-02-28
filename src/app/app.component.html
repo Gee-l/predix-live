@@ -35,6 +35,6 @@
         </span>
     </agm-map>
 </div>
-<div [id]="'farms_trigger'" *ngIf="farms != undefined">
+<div [id]="'farms_trigger'">
    <app-farm-menu [nodes]="markers" [mapRef]="mapRef" [(farm)]="farm" [(markers)]="markers"></app-farm-menu>
 </div>
