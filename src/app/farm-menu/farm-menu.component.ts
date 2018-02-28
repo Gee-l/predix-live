@@ -21,7 +21,9 @@ export class FarmMenuComponent implements OnInit {
   @Input() nodes: Array<any>;
   @Input() mapRef: any;
   @Input() farm: any;
+  @Input() markers: any;
   @Output() farmChange: EventEmitter<any> = new EventEmitter();
+  @Output() markersChange: EventEmitter<any> = new EventEmitter();
   protected gaugeInfo: Array<any>;
   protected unitsInfo: Array<any>;
   protected values: Array<any>;
@@ -35,6 +37,9 @@ export class FarmMenuComponent implements OnInit {
   ngOnInit() {}
   public updateNodes(farm) {
       this.farmChange.emit(farm);
+      this.markers = farm.nodes;
+      this.markersChange.emit(this.markers);
+      console.log(this.markers);
       console.log(this.farm);
     if (JSON.stringify(this.nodes) !== JSON.stringify(farm.nodes)) {
       this.nodes = farm.nodes;
@@ -52,6 +57,9 @@ export class FarmMenuComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log('Dialog Closed');
         });
+    }
+    public offlineNodeSelected(name, sensors, marker) {
+        this.mapRef.setCenter({lat: marker.location.latitude + 0.0015, lng: marker.location.longitude});
     }
     protected getGaugeInfo(sensors) {
       this.gaugeInfo = [];

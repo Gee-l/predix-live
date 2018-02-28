@@ -7,7 +7,7 @@
   </mat-list-item>
 </mat-list>
   <mat-menu #farmsMenu="matMenu" [overlapTrigger]="false">
-    <div *ngIf="farms != undefined">
+    <div *ngIf="farms.length != 0">
       <button mat-menu-item *ngFor="let farm of farms" (click)="updateNodes(farm)">{{farm.name}}</button>
     </div>
   </mat-menu>
@@ -18,7 +18,7 @@
         <mat-icon>keyboard_arrow_right</mat-icon>{{node.name}}
       </button>
         <ng-template #offlineButton>
-          <button mat-menu-item disabled>
+          <button mat-menu-item (click)="offlineNodeSelected(node.name, node.sensors, node)">
             <mat-icon color="warn">highlight_off</mat-icon>{{node.name}}
           </button>
         </ng-template>
