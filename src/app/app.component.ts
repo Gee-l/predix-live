@@ -93,6 +93,7 @@ export class AppComponent extends FarmMenuComponent implements OnInit {
                         ob.subscribe(ob => {
                             ob.subscribe(farm => {
                                 this.farm = farm;
+                                console.log(farm)
                                 this.markers = farm.nodes;
                             })
                         })

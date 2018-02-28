@@ -28,7 +28,7 @@ export class NodesEndpointService {
         return Rx.from(_farm.nodes)
           .map((node:any, nodeIndex) => {
             
-            farm.nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, new Array<Sensor>(), node.status));
+            farm.nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, new Array<Sensor>(), node.status, node.description));
             return Rx.from(node.sensors)
               .map((sensor: any, sensorIndex) => {
                 
@@ -64,7 +64,7 @@ export class NodesEndpointService {
                 return Rx.from(_farm.nodes)
                   .map((node:any, nodeIndex) => {
                     
-                    farms_main[farmIndex].nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, new Array<Sensor>(), node.status));
+                    farms_main[farmIndex].nodes.push(new Node(node.uri, node.name, node.manufacturer, node.location, new Array<Sensor>(), node.status, node.description));
                     return Rx.from(node.sensors)
                       .map((sensor: any, sensorIndex) => {
                         
