@@ -44,21 +44,9 @@ export class FarmGaugeComponent implements OnInit {
       this.data = values;
   }
   customizeText(arg) {
-      console.log(arg);
     return arg.valueText;
   }
   customTooltip(arg) {
     console.log(arg);
   }
-  /*private _validate_value(values) {
-      let numeric;
-        for (let i = 0; i < values.length; i++) {
-            numeric = /^\d+$/.test(values[i]);
-            if (values[i] === undefined || !numeric) {
-                values.splice(i, 1);
-                i = -1;
-            }
-        }
-        return values;
-    }*/
 }

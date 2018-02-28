@@ -1,4 +1,4 @@
-<div *ngIf="farm != undefined">
+<div *ngIf="farm != undefined" id="gmap">
     <agm-map [latitude]="farm.location.latitude" [longitude]="farm.location.longitude" [mapTypeId]="typeId"
             [maxZoom]="maxZoom" [minZoom]="minZoom" [zoom]="zoom" [streetViewControl]="streetControl" #gm (mapReady)="setMap()">
         <agm-marker *ngFor="let marker of markers; let i of index" [latitude]="marker.location.latitude"
