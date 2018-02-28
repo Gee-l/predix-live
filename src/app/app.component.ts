@@ -5,6 +5,7 @@ import { NodesEndpointService } from './nodes-endpoint.service';
 import { Router } from '@angular/router';
 import { FarmMenuComponent } from './farm-menu/farm-menu.component';
 import { GoogleMapsAPIWrapper } from '@agm/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -42,33 +43,40 @@ export class AppComponent extends FarmMenuComponent implements OnInit {
         this.values = [];
     }
     ngOnInit() {
-        // this.nodeEndpointService.getFarms()
-        //     .subscribe(observable => {
-        //         observable.subscribe(farms => {
-        //            // farms.forEach((farm, index) => {
-        //                 this.getFarm(farms[2].uri.split('/')[2]);
-        //             //})
-        //         })
-        //     })
-        this.nodeEndpointService.getAllInfo()
+        this.nodeEndpointService.getFarm('63f2a245-4f66-42ba-bf6f-decc73f09abd')
+            .subscribe(ob => {
+                ob.subscribe(ob => {
+                    ob.subscribe(ob => {
+                        ob.subscribe(farm => {
+                            this.farm = farm;
+                            console.log(farm);
+                            this.markers = farm.nodes;
+                        })
+                    })
+                })
+            })
+        /*this.nodeEndpointService.getAllInfo()
             .subscribe(ob => {
                 ob.subscribe(ob => {
                     ob.subscribe(ob => {
                         ob.subscribe(ob => {
                             ob.subscribe(ob => {
                                 ob.subscribe(ob => {
-                                    ob.subscribe(farms => {
-                                        this.farms = [];
-                                        this.farms = farms;
-                                        this.farm = farms[2];
-                                        this.markers =  this.farm.nodes;
+                                    ob.subscribe(ob => {
+                                        ob.subscribe(farms => {
+                                            this.farms = [];
+                                            this.farms = farms;
+                                            this.farm = farms[2];
+                                            this.markers =  this.farm[2].nodes;
+                                            console.log("Farms: ", farms);
+                                        })
                                     })
                                 })
                             })
                         })
                     })
                 })
-            })
+            })*/
     }
 
     public reRender(farm) {
@@ -85,10 +93,10 @@ export class AppComponent extends FarmMenuComponent implements OnInit {
                     observable.subscribe(farm => {
                         console.log(farm);
                         if (farm) {
-                            this.markers = farm.nodes;
-                            this.farm = farm;
-                            this.farms = [];
-                            this.farms.push(farm);
+                            // this.markers = farm.nodes;
+                            // this.farm = farm;
+                            // this.farms = [];
+                            // this.farms.push(farm);
                             return farm;
                         }
                     })

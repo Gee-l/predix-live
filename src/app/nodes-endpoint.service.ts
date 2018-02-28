@@ -55,15 +55,12 @@ export class NodesEndpointService {
       .pipe(map((farms: any, index) => {
         return Rx.from(farms)
           .map((farms: any, farmIndex) => {
-            console.log('index: ', farmIndex);
             return Rx.of(farms)
               .map((farm: any) => {
-                console.log('each farm', farm);
                 return this.http.get(`https://soil-temp-backend.run.aws-usw02-pr.ice.predix.io/api/v1_0/farm/${farm.uri.split('/')[2]}`)
               .pipe(map((_farm: any) => {
 
                 farms_main[farmIndex] = new Farm(_farm.uri, _farm.name, _farm.description, _farm.location, new Array<Node>());
-                console.log('each farm', farms_main);
                 return Rx.from(_farm.nodes)
                   .map((node:any, nodeIndex) => {
                     
@@ -81,7 +78,7 @@ export class NodesEndpointService {
                               farms_main[farmIndex].nodes[nodeIndex].sensors[sensorIndex].lastReading = readings[readings.length - 1].value;
                             else
                             farms_main[farmIndex].nodes[nodeIndex].sensors[sensorIndex].lastReading = 0;
-                            return farms_main;
+                            return Rx.of(farms_main);
                           }));
                       });
                   });
