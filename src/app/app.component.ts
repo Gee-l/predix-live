@@ -4,6 +4,7 @@ import { NodesEndpointService } from './nodes-endpoint.service';
 import { Router } from '@angular/router';
 import { FarmMenuComponent } from './farm-menu/farm-menu.component';
 import { GoogleMapsAPIWrapper } from '@agm/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -23,12 +24,16 @@ export class AppComponent extends FarmMenuComponent implements OnInit, OnChanges
     public streetControl: boolean;
     public farm: any;
     public farms: Array<any>;
+    private farmName: string;
     protected gaugeInfo: Array<any>;
     protected unitsInfo: Array<any>;
     protected values: Array<any>;
 
-    constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private router: Router) {
+    constructor(public sensorDialog: MatDialog, private nodeEndpointService: NodesEndpointService, private route: ActivatedRoute) {
         super(sensorDialog);
+        this.route.queryParams.subscribe(params => {
+                this.farmName = params.farm;
+        });
         this.typeId = 'satellite';
         this.minZoom = 15;
         this.maxZoom = 17;
@@ -41,6 +46,7 @@ export class AppComponent extends FarmMenuComponent implements OnInit, OnChanges
         this.values = [];
     }
     ngOnInit() {
+        console.log(this.farmName);
         // this.nodeEndpointService.getFarms()
         //     .subscribe(observable => {
         //         observable.subscribe(farms => {
@@ -83,11 +89,13 @@ export class AppComponent extends FarmMenuComponent implements OnInit, OnChanges
         console.log('I was Called');
        // console.log('Native: ', this.map.setCenter({lat: 23, lng: 29}));
         if (gm.lastOpen != null) {
-            gm.lastOpen.close();
+            if (gm.lastOpen !== undefined) {
+                gm.lastOpen.close();
+            }
         }
         gm.lastOpen = nodeInfo;
         nodeInfo.open();
-        return (gm);
+        return (nodeInfo);
     }
     closeInfoWindow(nodeInfo, gm) {
         setTimeout((data) => {
@@ -95,5 +103,6 @@ export class AppComponent extends FarmMenuComponent implements OnInit, OnChanges
                 gm.lastOpen.close();
             }
         }, 1000);
+        return nodeInfo;
     }
 }

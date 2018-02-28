@@ -1,5 +1,5 @@
 ::ng-deep #gauge-demo {
-    background-color:transparent;
+    background-color:rgba(0, 0, 0, 0.4);
     width: 90%;
     padding: 12px;
     border-radius: 30px 0 30px 0;
