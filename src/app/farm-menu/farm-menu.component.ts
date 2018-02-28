@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import {SensorsPopupComponent} from '../sensors-popup/sensors-popup.component';
 import { MatDialog} from '@angular/material';
 import {animate, style, transition, trigger} from '@angular/animations';
@@ -20,6 +20,8 @@ export class FarmMenuComponent implements OnInit {
   @Input() farms: Array<any>;
   @Input() nodes: Array<any>;
   @Input() mapRef: any;
+  @Input() farm: any;
+  @Output() farmChange: EventEmitter<any> = new EventEmitter();
   protected gaugeInfo: Array<any>;
   protected unitsInfo: Array<any>;
   protected values: Array<any>;
@@ -31,9 +33,11 @@ export class FarmMenuComponent implements OnInit {
       this.timeSeries = [];
   }
   ngOnInit() {}
-  public updateNodes(nodes) {
-    if (JSON.stringify(this.nodes) !== JSON.stringify(nodes)) {
-      this.nodes = nodes;
+  public updateNodes(farm) {
+      this.farmChange.emit(farm);
+      console.log(this.farm);
+    if (JSON.stringify(this.nodes) !== JSON.stringify(farm.nodes)) {
+      this.nodes = farm.nodes;
     }
   }
   public nodeSelected(name, sensors, marker) {
