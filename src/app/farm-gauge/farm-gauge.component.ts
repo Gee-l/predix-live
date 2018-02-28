@@ -18,6 +18,7 @@ export class FarmGaugeComponent implements OnInit {
   @Input() panelId: string;
   @Input() sensors: Array<any>;
   @Input() diaData: any;
+  public ocean: Array<any>;
 
   constructor() {
     this.startValue = 0;
