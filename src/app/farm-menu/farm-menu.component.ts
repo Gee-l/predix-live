@@ -50,7 +50,7 @@ export class FarmMenuComponent implements OnInit {
       this.getGaugeInfo(sensors);
         const dialogRef = this.sensorDialog.open(SensorsPopupComponent, {
             width: '50%',
-            data: { fname: this.farms[0].name, name: name, sensors: this.gaugeInfo
+            data: { fname: this.farm.name, name: name, sensors: this.gaugeInfo
             , unitsInfo: this.unitsInfo, values: this.values, timeSeries: this.timeSeries},
             position: {top: '0%'}
         });
